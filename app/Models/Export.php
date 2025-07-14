@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Log extends Model
+class Export extends Model
 {
     /**
      * モデルと関連しているテーブル
      *
      * @var string
      */
-    protected $table = 'logs';
+    protected $table = 'exports';
 
     /**
      * The attributes that are mass assignable.
@@ -20,8 +20,10 @@ class Log extends Model
      */
     protected $fillable = [
         'user_id',
-        'action',
-        'detail',
+        'type',
+        'period_from',
+        'period_to',
+        'file_name',
     ];
 
     // リレーション:user

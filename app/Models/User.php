@@ -71,4 +71,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Log::class);
     }
+
+    // リレーション:export
+    public function exports()
+    {
+        return $this->hasMany(Export::class);
+    }
 }

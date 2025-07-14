@@ -65,4 +65,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Expense::class);
     }
+
+    // リレーション:log
+    public function logs()
+    {
+        return $this->hasMany(Log::class);
+    }
 }

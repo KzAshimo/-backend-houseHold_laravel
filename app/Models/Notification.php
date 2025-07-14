@@ -26,4 +26,10 @@ class Notification extends Model
         'end_date',
     ];
 
+        // リレーション:notification_view
+    public function notification_views()
+    {
+        return $this->hasMany(NotificationView::class);
+    }
+
 }

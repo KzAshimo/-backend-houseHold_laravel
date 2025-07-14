@@ -77,4 +77,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Export::class);
     }
+
+    // リレーション:notification_view
+    public function notification_views()
+    {
+        return $this->hasMany(NotificationView::class);
+    }
 }

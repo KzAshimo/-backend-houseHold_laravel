@@ -47,4 +47,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // リレーション:category
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
+    }
 }

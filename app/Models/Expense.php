@@ -3,15 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Category extends Model
+class Expense extends Model
 {
-    /**
+    use SoftDeletes;
+
+        /**
      * モデルと関連しているテーブル
      *
      * @var string
      */
-    protected $table = 'categories';
+    protected $table = 'expenses';
 
     /**
      * The attributes that are mass assignable.
@@ -19,9 +22,10 @@ class Category extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'name',
         'user_id',
-        'type',
+        'category_id',
+        'amount',
+        'memo',
     ];
 
     // リレーション:user
@@ -30,15 +34,10 @@ class Category extends Model
         return $this->belongsTo(User::class);
     }
 
-    // リレーション:income
-    public function incomes()
+    // リレーション:category
+    public function category()
     {
-        return $this->hasMany(Income::class);
+        return $this->belongsTo(Category::class);
     }
 
-    // リレーション:expense
-    public function expenses()
-    {
-        return $this->hasMany(Expense::class);
-    }
 }

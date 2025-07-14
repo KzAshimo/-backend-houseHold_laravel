@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('incomes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->foreignId('user_id')->constrained()->comment('ユーザid');
-            $table->string('name', 50)->nullable()->comment('カテゴリ名');
-            $table->string('type')->nullable()->comment('収入 / 支出'); // 今後Enumで修正予定
+            $table->foreignId('category_id')->constrained()->comment('収入カテゴリ');
+            $table->integer('amount')->comment('金額');
+            $table->string('memo')->comment('メモ');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('incomes');
     }
 };

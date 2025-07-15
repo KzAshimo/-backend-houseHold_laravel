@@ -3,18 +3,30 @@
 namespace Tests\Feature\Auth;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class LoginTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
-    public function test_example(): void
+    use RefreshDatabase;
+
+    // setup
+    #[\Override]
+    protected function setUp(): void
     {
-        $response = $this->get('/');
+        parent::setUp();
+        $this->seed();
+    }
+
+    public function test_user1_login成功(): void
+    {
+        $response = $this->postJson('/login', [
+            'email' => 'amuro@sample.com',
+            'password' => 'password',
+        ]);
 
         $response->assertStatus(200);
+        $response->assertJson([
+            'result' => true,
+        ]);
     }
 }

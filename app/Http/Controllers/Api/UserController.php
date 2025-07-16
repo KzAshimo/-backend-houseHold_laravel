@@ -36,8 +36,7 @@ class UserController extends Controller
     // ユーザ情報取得
     public function show()
     {
-        $user = Auth::guard('user');
-
+        $user = Auth::user();
         return new ShowResource($user);
     }
 }

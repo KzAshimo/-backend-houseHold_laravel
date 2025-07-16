@@ -13,7 +13,7 @@ class StoreTest extends TestCase
 
     public function test_storeUser_成功(): void
     {
-        $response = $this->postJson('/api/v1/user/store', [
+        $response = $this->postJson('api/v1/user/store', [
             'name' => 'testUser',
             'email' => 'test@sample.com',
             'password' => 'password',

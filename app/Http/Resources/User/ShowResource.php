@@ -15,7 +15,7 @@ class ShowResource extends JsonResource
             'email' => $this->email,
             'role' => $this->role,
             'created_at' => $this->created_at,
-            'update_at' => $this->update_at,
+            'update_at' => $this->updated_at,
         ];
     }
 }

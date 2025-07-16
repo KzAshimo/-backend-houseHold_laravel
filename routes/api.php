@@ -13,8 +13,8 @@ Route::prefix('v1')->group(function () {
 
 // ユーザ認証必要
 Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
-    // ユーザ関係
-    Route::prefix('user')->group(function () {
-        Route::get('show', [UserController::class, 'show']); // ユーザ情報取得
+        // ユーザ関係
+        Route::prefix('user')->group(function () {
+            Route::get('show', [UserController::class, 'show']); // ユーザ情報取得
+        });
     });
-});

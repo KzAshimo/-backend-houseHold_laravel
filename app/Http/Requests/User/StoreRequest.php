@@ -4,8 +4,8 @@ namespace App\Http\Requests\User;
 
 use App\Enums\User\RoleEnum;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\Rules\Password;
 
 class StoreRequest extends FormRequest
 {

@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\StoreRequest;
+use App\Http\Resources\User\ShowResource;
 use App\Services\User\StoreService as UserStoreService;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
+    // ユーザ新規登録
     public function store(StoreRequest $request, UserStoreService $service)
     {
         DB::beginTransaction();
@@ -28,5 +31,13 @@ class UserController extends Controller
             Log::error();
             throw $e;
         }
+    }
+
+    // ユーザ情報取得
+    public function show()
+    {
+        $user = Auth::guard('user');
+
+        return new ShowResource($user);
     }
 }

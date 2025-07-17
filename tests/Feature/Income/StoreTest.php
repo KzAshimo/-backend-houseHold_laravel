@@ -26,6 +26,26 @@ class StoreTest extends TestCase
         // ログイン処理
         $this->actingAs($user);
 
+        // リクエストデータ
+        $data = [
+            'category_id' => 1,
+            'amount' => 100000,
+            'content' => 'アプリ収益',
+            'memo' => '広告収入',
+        ];
+
+        $response = $this->postJson(('/api/v1/income/store'), $data);
+
+        dump($response->json());
+
         $response->assertStatus(200);
+
+        // DBに保存されているか検証
+        $this->assertDatabaseHas('incomes', [
+            'category_id' => 1,
+            'amount' => 100000,
+            'content' => 'アプリ収益',
+            'memo' => '広告収入',
+        ]);
     }
 }

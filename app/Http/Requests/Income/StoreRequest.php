@@ -24,9 +24,8 @@ class StoreRequest extends FormRequest
         return [
             'category_id' => ['required', 'exists:categories,id'],
             'amount' => ['required', 'integer', 'min:0'],
-            'content' => ['required', 'string', 'min:50'],
+            'content' => ['required', 'string', 'max:50'],
             'memo' => ['nullable', 'string', 'max:255'],
-            'date' => ['required', 'date'],
         ];
     }
 }

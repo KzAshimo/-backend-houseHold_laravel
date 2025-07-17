@@ -10,6 +10,7 @@ use App\Models\Income;
 use App\Services\Income\IndexService;
 use App\Services\Income\StoreService;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -26,16 +27,15 @@ class IncomeController extends Controller
     }
 
     // 収入追加
-    public function store(StoreRequest $request, StoreService $service): JsonResource
+    public function store(StoreRequest $request, StoreService $service): JsonResponse
     {
         // リクエストデータをdtoへ渡す
         $dto = new StoreDto(
-            usrId: auth()->id,
+            userId: Auth::user()->id,
             categoryId:$request->input('category_id'),
             amount:$request->input('amount'),
             content:$request->input('content'),
             memo:$request->input('memo'),
-            date:$request->input('date'),
         );
 
         DB::beginTransaction();
@@ -49,7 +49,7 @@ class IncomeController extends Controller
             ]);
         } catch (Exception $e) {
             DB::rollback();
-            Log::error();
+            Log::error($e);
             throw $e;
         }
     }

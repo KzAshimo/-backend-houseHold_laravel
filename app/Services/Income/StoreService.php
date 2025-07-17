@@ -15,7 +15,6 @@ class StoreService
             'amount' => $dto->amount,
             'content' => $dto->content,
             'memo' => $dto->memo,
-            'date' => $dto->date,
         ]);
     }
 }

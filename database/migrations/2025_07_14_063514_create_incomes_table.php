@@ -16,7 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->comment('ユーザid');
             $table->foreignId('category_id')->constrained()->comment('収入カテゴリ');
             $table->integer('amount')->comment('金額');
-            $table->string('memo', 255)->comment('メモ');
+            $table->string('content', 50)->comment('収入内訳');
+            $table->string('memo', 255)->nullable()->comment('メモ');
             $table->timestamps();
             $table->softDeletes();
         });

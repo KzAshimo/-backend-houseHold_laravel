@@ -25,7 +25,9 @@ class Income extends Model
         'user_id',
         'category_id',
         'amount',
+        'content',
         'memo',
+        'date',
     ];
 
     // リレーション:user

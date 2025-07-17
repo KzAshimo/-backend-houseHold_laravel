@@ -14,6 +14,6 @@ class IncomeController extends Controller
     {
         $incomes = $service();
 
-        return new IndexResource($incomes);
+        return IndexResource::collection($incomes);
     }
 }

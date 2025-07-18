@@ -70,4 +70,9 @@ class IncomeController extends Controller
         return new ShowResource($income);
     }
 
+    // 収入編集
+    public function put(Request $request)
+    {
+        request()->json([]);
+    }
 }

@@ -78,7 +78,8 @@ class IncomeController extends Controller
         $income = Income::findOrFail($request->income_id);
 
         // 認可処理
-        if ($income->user_id !== Auth::user()->id) {
+        $user = Auth::user();
+        if ($user->role !== 'admin' && $income->user_id !== $user->id) {
             throw new AuthorizationException('この収入データを更新する権限がありません。');
         }
 

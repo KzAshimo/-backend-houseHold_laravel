@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Log;
 
 class IncomeController extends Controller
 {
-    // 収入一覧
+    // --- 収入一覧 ---
     public function index(IndexService $service): JsonResource
     {
         $incomes = $service();
@@ -34,7 +34,7 @@ class IncomeController extends Controller
         return IndexResource::collection($incomes);
     }
 
-    // 収入追加
+    // --- 収入追加 ---
     public function store(StoreRequest $request, StoreService $service): JsonResponse
     {
         // リクエストデータをdtoへ渡す
@@ -62,7 +62,7 @@ class IncomeController extends Controller
         }
     }
 
-    // 収入詳細
+    // --- 収入詳細 ---
     public function show(ShowRequest $request, ShowService $service): ShowResource
     {
         $dto = new ShowDto((int)$request->route('income_id'));
@@ -72,7 +72,7 @@ class IncomeController extends Controller
         return new ShowResource($income);
     }
 
-    // 収入編集
+    // --- 収入編集 ---
     public function update(UpdateRequest $request, UpdateService $service)
     {
         $income = Income::findOrFail($request->income_id);
@@ -104,5 +104,11 @@ class IncomeController extends Controller
             Log::error($e);
             throw $e;
         }
+    }
+
+    // --- 収入削除 ---
+    public function delete()
+    {
+        return response()->json();
     }
 }

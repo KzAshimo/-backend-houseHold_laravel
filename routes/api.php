@@ -23,5 +23,6 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
         Route::prefix('income')->group(function(){
             Route::get('index', [IncomeController::class, 'index']); // 収入 一覧取得
             Route::post('store', [IncomeController::class, 'store']); // 収入 新規登録
+            Route::get('{income_id}', [IncomeController::class, 'show']); // 収入 詳細取得
         });
     });

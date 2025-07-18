@@ -9,6 +9,7 @@ class DeleteRequest extends FormRequest
     #[\Override]
     protected function prepareForValidation()
     {
+        // URLパラメータからincome_id取得
         $this->merge([
             'income_id' => $this->route('income_id'),
         ]);

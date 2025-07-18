@@ -9,6 +9,7 @@ class StoreService
 {
     public function __invoke(StoreDto $dto)
     {
+        // 新規データ作成
         return Income::create([
             'user_id' => $dto->userId,
             'category_id' => $dto->categoryId,

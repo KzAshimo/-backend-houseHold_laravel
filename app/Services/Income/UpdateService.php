@@ -9,6 +9,7 @@ class UpdateService
 {
     public function __invoke(UpdateDto $dto, Income $income): void
     {
+        // データ編集 一時保存(登録処理はcontroller)
         $income->fill([
             'amount' => $dto->amount,
             'content' => $dto->content,

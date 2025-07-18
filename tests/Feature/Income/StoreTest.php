@@ -40,7 +40,7 @@ class StoreTest extends TestCase
 
         $response->assertStatus(200);
 
-        // DBに保存されているか検証
+        // DB確認
         $this->assertDatabaseHas('incomes', [
             'category_id' => 1,
             'amount' => 100000,

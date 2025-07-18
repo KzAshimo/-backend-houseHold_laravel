@@ -25,7 +25,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
         Route::post('store', [IncomeController::class, 'store']); // 収入 新規登録
         Route::prefix('{income_id}')->group(function () {
             Route::get('/', [IncomeController::class, 'show']); // 収入 詳細取得
-            Route::put('/', [IncomeController::class, 'put']); // 収入 編集
+            Route::put('/', [IncomeController::class, 'update']); // 収入 編集
         });
     });
 });

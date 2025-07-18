@@ -48,4 +48,26 @@ class StoreTest extends TestCase
             'memo' => '広告収入',
         ]);
     }
+
+    public function test_storeIncome_バリデーションエラー(): void
+    {
+                // ログイン用にユーザデータ取得
+        $user = User::first();
+
+        // ログイン処理
+        $this->actingAs($user);
+
+        // リクエストデータ
+        $data = [
+            'category_id' => 1,
+            'amount' => 100000,
+            'content' => 5000,
+            'memo' => '広告収入',
+        ];
+
+        $response = $this->postJson(('/api/v1/income/store'), $data);
+
+        $response->assertStatus(422);
+
+    }
 }

@@ -5,7 +5,6 @@ namespace Tests\Feature\Income;
 use App\Models\Income;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ShowTest extends TestCase
@@ -26,7 +25,7 @@ class ShowTest extends TestCase
         $user = User::first();
         // ログイン処理
         $this->actingAs($user);
-        // IncomeId-> 1 のデータ取得
+
         $income = Income::find(1);
 
         $response = $this->getJson("/api/v1/income/{$income->id}");
@@ -46,4 +45,20 @@ class ShowTest extends TestCase
                 ]
             ]);
     }
+
+        public function test_showIncome_存在しないデータ(): void
+    {
+        // ユーザー認証
+        $user = User::first();
+        // ログイン処理
+        $this->actingAs($user);
+
+        $response = $this->getJson("/api/v1/income/4");
+
+        // ログ出力
+        dump($response->json());
+
+        $response->assertStatus(422);
+    }
+
 }

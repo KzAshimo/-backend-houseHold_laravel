@@ -22,7 +22,6 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'income_id' => ['required', 'integer', 'exists:incomes,id'],
             'category_id' => ['required', 'integer', 'exists:categories,id'],
             'amount' => ['required', 'integer', 'min:1'],
             'content' => ['required', 'string', 'max:255'],

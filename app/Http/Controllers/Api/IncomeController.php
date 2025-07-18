@@ -6,12 +6,14 @@ use App\Dto\Income\ShowDto;
 use App\Dto\Income\StoreDto;
 use App\Dto\Income\UpdateDto;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Income\DeleteRequest;
 use App\Http\Requests\Income\ShowRequest;
 use App\Http\Requests\Income\StoreRequest;
 use App\Http\Requests\Income\UpdateRequest;
 use App\Http\Resources\Income\IndexResource;
 use App\Http\Resources\Income\ShowResource;
 use App\Models\Income;
+use App\Services\Income\DeleteService;
 use App\Services\Income\IndexService;
 use App\Services\Income\ShowService;
 use App\Services\Income\StoreService;
@@ -73,7 +75,7 @@ class IncomeController extends Controller
     }
 
     // --- 収入編集 ---
-    public function update(UpdateRequest $request, UpdateService $service)
+    public function update(UpdateRequest $request, UpdateService $service): JsonResponse
     {
         $income = Income::findOrFail($request->income_id);
 
@@ -97,9 +99,9 @@ class IncomeController extends Controller
 
             return response()->json([
                 'result' => true,
-                'income'=> $income
+                'income' => $income
             ]);
-        } catch (\Throwable $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
             throw $e;
@@ -107,8 +109,29 @@ class IncomeController extends Controller
     }
 
     // --- 収入削除 ---
-    public function delete()
+    public function delete(DeleteRequest $request, DeleteService $service): JsonResponse
     {
-        return response()->json();
+        $income = Income::findOrFail($request->income_id);
+
+        // 認可処理
+        $user = Auth::user();
+        if ($user->role !== 'admin' && $income->user_id !== $user->id) {
+            throw new AuthorizationException('この収入データを更新する権限がありません。');
+        }
+
+        DB::beginTransaction();
+        try {
+            $service($income);
+
+            DB::commit();
+
+            return response()->json([
+                'result' => true,
+            ]);
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error($e);
+            throw $e;
+        }
     }
 }

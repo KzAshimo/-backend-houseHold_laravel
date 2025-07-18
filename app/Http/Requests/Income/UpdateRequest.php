@@ -4,8 +4,16 @@ namespace App\Http\Requests\Income;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
+    #[\Override]
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'income_id' => $this->route('income_id'),
+        ]);
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -22,8 +30,6 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'income_id' => ['required', 'integer', 'exists:incomes,id'],
-            'category_id' => ['required', 'integer', 'exists:categories,id'],
             'amount' => ['required', 'integer', 'min:1'],
             'content' => ['required', 'string', 'max:255'],
             'memo' => ['nullable', 'string', 'max:255'],

@@ -22,7 +22,7 @@ class IndexTest extends TestCase
 
     public function test_indexIncomes成功(): void
     {
-        // ログイン用にユーザデータ取得
+        // ユーザデータ取得
         $user = User::first();
 
         // ログイン処理 / indexリクエスト

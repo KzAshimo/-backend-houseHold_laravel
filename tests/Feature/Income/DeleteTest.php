@@ -23,7 +23,7 @@ class DeleteTest extends TestCase
      */
     public function test_deleteIncome_成功(): void
     {
-        // ログイン処理
+        // ユーザデータ取得 / ログイン処理
         $user = User::find(1);
         $this->actingAs($user);
 
@@ -36,5 +36,27 @@ class DeleteTest extends TestCase
 
         // DB確認
         $this->assertSoftDeleted('incomes', ['id' => 1]);
+    }
+
+    public function test_deleteIncome_権限無し(): void
+    {
+        // ユーザデータ取得 / ログイン処理
+        $user = User::find(1);
+        $this->actingAs($user);
+
+        $response = $this->deleteJson('/api/v1/income/3');
+
+        $response->assertStatus(403);
+    }
+
+    public function test_deleteIncome_存在しないデータ(): void
+    {
+        // ユーザデータ取得 / ログイン処理
+        $user = User::find(1);
+        $this->actingAs($user);
+
+        $response = $this->deleteJson('/api/v1/income/4');
+
+        $response->assertStatus(422);
     }
 }

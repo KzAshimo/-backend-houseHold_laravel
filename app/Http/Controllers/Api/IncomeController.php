@@ -28,18 +28,20 @@ use Illuminate\Support\Facades\Log;
 
 class IncomeController extends Controller
 {
-    // --- 収入一覧 ---
+    // --- 収入一覧取得 ---
     public function index(IndexService $service): JsonResource
     {
+        // データ一覧取得(serviceクラス使用)
         $incomes = $service();
 
+        // データ返却(resourceクラス使用)
         return IndexResource::collection($incomes);
     }
 
-    // --- 収入追加 ---
+    // --- 収入新規登録 ---
     public function store(StoreRequest $request, StoreService $service): JsonResponse
     {
-        // リクエストデータをdtoへ渡す
+        // リクエストデータ取得(dtoクラス使用)
         $dto = new StoreDto(
             userId: Auth::user()->id,
             categoryId: $request->input('category_id'),
@@ -50,7 +52,9 @@ class IncomeController extends Controller
 
         DB::beginTransaction();
         try {
+            // データ新規登録(serviceクラス使用)
             $income = $service($dto);
+
             DB::commit();
 
             return response()->json([
@@ -64,19 +68,23 @@ class IncomeController extends Controller
         }
     }
 
-    // --- 収入詳細 ---
+    // --- 収入詳細取得 ---
     public function show(ShowRequest $request, ShowService $service): ShowResource
     {
+        // 対象のデータ取得(dtoクラス使用)
         $dto = new ShowDto((int)$request->route('income_id'));
 
+        // データ取得(serviceクラス使用)
         $income = $service($dto);
 
+        // データ返却(resourceクラス使用)
         return new ShowResource($income);
     }
 
     // --- 収入編集 ---
     public function update(UpdateRequest $request, UpdateService $service): JsonResponse
     {
+        // 対象のデータ取得
         $income = Income::findOrFail($request->income_id);
 
         // 認可処理
@@ -87,12 +95,15 @@ class IncomeController extends Controller
 
         DB::beginTransaction();
         try {
+
+            // リクエストデータ取得(dtoクラス使用)
             $dto = new UpdateDto(
                 amount: $request->amount,
                 content: $request->content,
                 memo: $request->memo,
             );
 
+            // 編集処理(serviceクラス使用)
             $service($dto, $income);
 
             DB::commit();
@@ -111,6 +122,7 @@ class IncomeController extends Controller
     // --- 収入削除 ---
     public function delete(DeleteRequest $request, DeleteService $service): JsonResponse
     {
+        // 対象データ取得
         $income = Income::findOrFail($request->income_id);
 
         // 認可処理
@@ -121,6 +133,7 @@ class IncomeController extends Controller
 
         DB::beginTransaction();
         try {
+            // 削除処理(serviceクラス使用)
             $service($income);
 
             DB::commit();

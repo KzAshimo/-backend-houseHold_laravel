@@ -10,6 +10,6 @@ class StoreDto
         public readonly int $categoryId,
         public readonly int $amount,
         public readonly string $content,
-        public readonly string $memo,
+        public readonly ?string $memo,
     ) {}
 }

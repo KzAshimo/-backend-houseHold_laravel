@@ -12,12 +12,18 @@ use Illuminate\Http\Request;
 class ExpenseController extends Controller
 {
     // --- 支出一覧取得 ---
-    public function Index(IndexService $service)
+    public function index(IndexService $service)
     {
         // データ一覧取得(serviceクラス使用)
         $expenses = $service();
 
         // データ返却(resourceクラス使用)
         return IndexResource::collection($expenses);
+    }
+
+    // --- 支出新規登録 ---
+    public function store()
+    {
+        return response()->json();
     }
 }

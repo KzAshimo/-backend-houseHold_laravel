@@ -34,5 +34,6 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     // 支出関係
     Route::prefix('expense')->group(function() {
         Route::get('index', [ExpenseController::class, 'index']); // 支出 一覧取得
+        Route::post('store', [ExpenseController::class, 'store']); // 支出 新規登録
     });
 });

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ExpenseController;
 use App\Http\Controllers\Api\IncomeController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
@@ -28,5 +29,10 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
             Route::put('/', [IncomeController::class, 'update']); // 収入 編集
             Route::delete('/', [IncomeController::class, 'delete']); // 収入 編集
         });
+    });
+
+    // 支出関係
+    Route::prefix('expense')->group(function() {
+        Route::get('index', [ExpenseController::class, 'index']); // 支出 一覧取得
     });
 });

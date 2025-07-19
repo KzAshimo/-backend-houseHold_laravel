@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Services\Income;
+namespace App\Services\Expense;
 
-use App\Models\Income;
+use App\Models\Expense;
 
 class IndexService
 {
     public function __invoke()
     {
         // データ一覧取得(対象データと関係のある [user / category] )
-        return Income::with(['user', 'category'])->paginate(10);
+        return Expense::with(['user', 'category'])->paginate(10);
     }
 }

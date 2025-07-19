@@ -9,7 +9,7 @@ class ShowService
 {
     public function __invoke(ShowDto $dto): Income
     {
-        // 対象のデータ取得(income と関係のある [user / category] )
+        // 対象データ取得(関係のある [user / category] も取得)
         return Income::with(['user', 'category'])->find($dto->id);
     }
 }

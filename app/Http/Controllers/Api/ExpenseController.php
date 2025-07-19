@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Dto\Expense\ShowDto;
 use App\Dto\Expense\StoreDto;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Expense\ShowRequest;
 use App\Http\Requests\Expense\StoreRequest;
 use App\Http\Resources\Expense\IndexResource;
+use App\Http\Resources\Expense\ShowResource;
 use App\Services\Expense\IndexService;
+use App\Services\Expense\ShowService;
 use App\Services\Expense\StoreService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -54,5 +58,18 @@ class ExpenseController extends Controller
             Log::error($e);
             throw $e;
         }
+    }
+
+    // --- 支出詳細取得 ---
+    public function show(ShowRequest $request, ShowService $service) : ShowResource
+    {
+        // 対象データ取得(dtoクラス使用)
+        $dto = new ShowDto((int)$request->route('expense_id'));
+
+        // データ取得(serviceクラス使用)
+        $expense = $service($dto);
+
+        // データ返却(resourceクラス使用)
+        return new ShowResource($expense);
     }
 }

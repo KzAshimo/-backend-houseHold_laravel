@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Income;
 
+use App\Models\Income;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -26,9 +27,11 @@ class StoreTest extends TestCase
         // ログイン処理
         $this->actingAs($user);
 
+        $income = Income::find(1);
+
         // リクエストデータ
         $data = [
-            'category_id' => 1,
+            'category_id' => $income->id,
             'amount' => 100000,
             'content' => 'アプリ収益',
             'memo' => '広告収入',
@@ -36,13 +39,11 @@ class StoreTest extends TestCase
 
         $response = $this->postJson(('/api/v1/income/store'), $data);
 
-        dump($response->json());
-
         $response->assertStatus(200);
 
         // DB確認
         $this->assertDatabaseHas('incomes', [
-            'category_id' => 1,
+            'category_id' => $income->id,
             'amount' => 100000,
             'content' => 'アプリ収益',
             'memo' => '広告収入',
@@ -51,15 +52,17 @@ class StoreTest extends TestCase
 
     public function test_storeIncome_バリデーションエラー(): void
     {
-                // ログイン用にユーザデータ取得
+        // ログイン用にユーザデータ取得
         $user = User::first();
 
         // ログイン処理
         $this->actingAs($user);
 
+        $income = Income::find(1);
+
         // リクエストデータ
         $data = [
-            'category_id' => 1,
+            'category_id' => $income->id,
             'amount' => 100000,
             'content' => 5000,
             'memo' => '広告収入',
@@ -68,6 +71,5 @@ class StoreTest extends TestCase
         $response = $this->postJson(('/api/v1/income/store'), $data);
 
         $response->assertStatus(422);
-
     }
 }

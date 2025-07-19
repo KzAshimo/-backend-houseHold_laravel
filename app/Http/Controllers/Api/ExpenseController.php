@@ -55,4 +55,10 @@ class ExpenseController extends Controller
             throw $e;
         }
     }
+
+    // --- 支出詳細取得 ---
+    public function show()
+    {
+        return response()->json();
+    }
 }

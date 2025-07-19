@@ -16,7 +16,7 @@ class IndexResource extends JsonResource
             'amount' => $this->amount,
             'memo' => $this->memo,
             'created_at' => $this->created_at,
-            'update_at' => $this->updated_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 class ExpenseController extends Controller
 {
     // --- 支出一覧取得 ---
-    public function Index(IndexService $service): IndexService
+    public function Index(IndexService $service)
     {
         // データ一覧取得(serviceクラス使用)
         $expenses = $service();

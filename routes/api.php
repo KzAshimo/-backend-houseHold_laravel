@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ExpenseController;
 use App\Http\Controllers\Api\IncomeController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
@@ -26,7 +27,18 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
         Route::prefix('{income_id}')->group(function () {
             Route::get('/', [IncomeController::class, 'show']); // 収入 詳細取得
             Route::put('/', [IncomeController::class, 'update']); // 収入 編集
-            Route::delete('/', [IncomeController::class, 'delete']); // 収入 編集
+            Route::delete('/', [IncomeController::class, 'delete']); // 収入 削除
+        });
+    });
+
+    // 支出関係
+    Route::prefix('expense')->group(function() {
+        Route::get('index', [ExpenseController::class, 'index']); // 支出 一覧取得
+        Route::post('store', [ExpenseController::class, 'store']); // 支出 新規登録
+        Route::prefix('{expense_id}')->group(function(){
+            Route::get('/', [ExpenseController::class, 'show']); // 支出 詳細取得
+            Route::put('/', [ExpenseController::class, 'update']); // 支出 編集
+            Route::delete('/', [ExpenseController::class, 'delete']); // 支出 削除
         });
     });
 });

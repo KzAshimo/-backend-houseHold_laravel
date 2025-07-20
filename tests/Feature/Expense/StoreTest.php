@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Feature\Income;
+namespace Tests\Feature\Expense;
 
-use App\Models\Income;
+use App\Models\Expense;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -19,7 +19,7 @@ class StoreTest extends TestCase
         $this->seed();
     }
 
-    public function test_storeIncome_成功(): void
+    public function test_storeExpense_成功(): void
     {
         // ログイン用にユーザデータ取得
         $user = User::first();
@@ -27,26 +27,26 @@ class StoreTest extends TestCase
         // ログイン処理
         $this->actingAs($user);
 
-        $income = Income::find(1);
+        $expense = Expense::find(2);
 
         // リクエストデータ
         $data = [
-            'category_id' => $income->id,
-            'amount' => 100000,
-            'content' => 'アプリ収益',
-            'memo' => '広告収入',
+            'category_id' => $expense->id,
+            'amount' => 5000,
+            'content' => 'テスト費用',
+            'memo' => '受講料',
         ];
 
-        $response = $this->postJson(('/api/v1/income/store'), $data);
+        $response = $this->postJson(('/api/v1/expense/store'), $data);
 
         $response->assertStatus(200);
 
         // DB確認
-        $this->assertDatabaseHas('incomes', [
-            'category_id' => $income->id,
-            'amount' => 100000,
-            'content' => 'アプリ収益',
-            'memo' => '広告収入',
+        $this->assertDatabaseHas('expenses', [
+            'category_id' => $expense->id,
+            'amount' => 5000,
+            'content' => 'テスト費用',
+            'memo' => '受講料',
         ]);
     }
 
@@ -58,14 +58,14 @@ class StoreTest extends TestCase
         // ログイン処理
         $this->actingAs($user);
 
-        $income = Income::find(1);
+        $expense = Expense::find(2);
 
         // リクエストデータ
         $data = [
-            'category_id' => $income->id,
-            'amount' => 100000,
+            'category_id' => $expense->id,
+            'amount' => 5000,
             'content' => 5000,
-            'memo' => '広告収入',
+            'memo' => '受講料',
         ];
 
         $response = $this->postJson(('/api/v1/income/store'), $data);

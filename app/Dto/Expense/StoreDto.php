@@ -1,7 +1,6 @@
 <?php
 
-namespace App\Dto\Income;
-
+namespace App\Dto\Expense;
 
 class StoreDto
 {

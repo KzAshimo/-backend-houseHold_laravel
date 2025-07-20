@@ -1,13 +1,10 @@
 <?php
 
-namespace App\Dto\Income;
+namespace App\Dto\Expense;
 
-
-class StoreDto
+class UpdateDto
 {
     public function __construct(
-        public readonly int $userId,
-        public readonly int $categoryId,
         public readonly int $amount,
         public readonly string $content,
         public readonly ?string $memo,

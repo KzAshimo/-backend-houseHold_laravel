@@ -15,7 +15,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->foreignId('user_id')->constrained()->comment('ユーザid');
             $table->string('name', 50)->nullable()->comment('カテゴリ名');
-            $table->string('type')->nullable()->comment('収入 / 支出'); // 今後Enumで修正予定
+            $table->enum('type', ['income', 'expense'])->comment('収入 / 支出'); // 今後Enumで修正予定
             $table->timestamps();
         });
     }

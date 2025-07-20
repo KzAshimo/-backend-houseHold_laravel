@@ -72,4 +72,10 @@ class ExpenseController extends Controller
         // データ返却(resourceクラス使用)
         return new ShowResource($expense);
     }
+
+    // --- 支出編集 ---
+    public function update()
+    {
+        return response()->json();
+    }
 }

@@ -21,6 +21,7 @@ use App\Services\Expense\UpdateService;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -28,19 +29,19 @@ use Illuminate\Support\Facades\Log;
 class ExpenseController extends Controller
 {
     // --- 支出一覧取得 ---
-    public function index(IndexService $service)
+    public function index(IndexService $service): JsonResource
     {
-        // データ一覧取得(serviceクラス使用)
+        // 支出データ一覧取得：serviceクラス使用
         $expenses = $service();
 
-        // データ返却(resourceクラス使用)
+        // データを整形し返却：resourceクラス使用
         return IndexResource::collection($expenses);
     }
 
     // --- 支出新規登録 ---
     public function store(StoreRequest $request, StoreService $service): JsonResponse
     {
-        // リクエストデータ取得(dtoクラスへ渡す)
+        // リクエストデータをdtoへ渡す
         $dto = new StoreDto(
             userId: Auth::user()->id,
             categoryId: $request->input('category_id'),
@@ -51,7 +52,7 @@ class ExpenseController extends Controller
 
         DB::beginTransaction();
         try {
-            // データ新規登録(serviceクラス使用)
+            // 支出データを一時保存：serviceクラス使用
             $expense = $service($dto);
 
             DB::commit();
@@ -70,38 +71,38 @@ class ExpenseController extends Controller
     // --- 支出詳細取得 ---
     public function show(ShowRequest $request, ShowService $service): ShowResource
     {
-        // 対象データ取得(dtoクラス使用)
+        // ルートパラメータをdtoへ渡す
         $dto = new ShowDto((int)$request->route('expense_id'));
 
-        // データ取得(serviceクラス使用)
+        // 対象データ取得：serviceクラス使用
         $expense = $service($dto);
 
-        // データ返却(resourceクラス使用)
+        // データを整形し返却：resourceクラス使用
         return new ShowResource($expense);
     }
 
     // --- 支出編集 ---
     public function update(UpdateRequest $request, UpdateService $service): JsonResponse
     {
-        // 対象のデータ取得
+        // 対象データ取得
         $expense = Expense::findOrFail($request->expense_id);
 
         // 認可処理
         $user = Auth::user();
         if ($user->role !== 'admin' && $expense->user_id !== $user->id) {
-            throw new AuthorizationException('この収入データを更新する権限がありません。');
+            throw new AuthorizationException('この支出データを更新する権限がありません。');
         }
 
         DB::beginTransaction();
         try {
-            // リクエストデータ取得(dtoクラス使用)
+            // リクエストデータをdtoへ渡す
             $dto = new UpdateDto(
                 amount: $request->amount,
                 content: $request->content,
                 memo: $request->memo,
             );
 
-            // 編集処理(serviceクラス使用)
+            // 編集処理：serviceクラス使用
             $service($dto, $expense);
 
             DB::commit();
@@ -126,12 +127,12 @@ class ExpenseController extends Controller
         // 認可確認
         $user = Auth::user();
         if ($user->role !== 'admin' && $expense->user_id !== $user->id) {
-            throw new AuthorizationException('この収入データを更新する権限がありません。');
+            throw new AuthorizationException('この支出データを更新する権限がありません。');
         }
 
         DB::beginTransaction();
         try {
-            // 削除処理(serviceクラス使用)
+            // 削除処理：serviceクラス使用
             $service($expense);
 
             DB::commit();

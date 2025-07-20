@@ -6,12 +6,21 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest
 {
+    #[\Override]
+    protected function prepareForValidation()
+    {
+        // URLパラメータからexpense_id取得
+        $this->merge([
+            'expense_id' => $this->route('expense_id'),
+        ]);
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +31,9 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'amount' => ['required', 'integer', 'min:1'],
+            'content' => ['required', 'string', 'max:255'],
+            'memo' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

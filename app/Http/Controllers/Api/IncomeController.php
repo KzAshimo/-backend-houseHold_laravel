@@ -95,7 +95,6 @@ class IncomeController extends Controller
 
         DB::beginTransaction();
         try {
-
             // リクエストデータ取得(dtoクラス使用)
             $dto = new UpdateDto(
                 amount: $request->amount,

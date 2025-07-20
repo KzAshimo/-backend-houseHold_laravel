@@ -6,12 +6,14 @@ use App\Dto\Expense\ShowDto;
 use App\Dto\Expense\StoreDto;
 use App\Dto\Expense\UpdateDto;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Expense\DeleteRequest;
 use App\Http\Requests\Expense\ShowRequest;
 use App\Http\Requests\Expense\StoreRequest;
 use App\Http\Requests\Expense\UpdateRequest;
 use App\Http\Resources\Expense\IndexResource;
 use App\Http\Resources\Expense\ShowResource;
 use App\Models\Expense;
+use App\Services\Expense\DeleteService;
 use App\Services\Expense\IndexService;
 use App\Services\Expense\ShowService;
 use App\Services\Expense\StoreService;
@@ -107,6 +109,35 @@ class ExpenseController extends Controller
             return response()->json([
                 'result' => true,
                 'expense' => $expense,
+            ]);
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error($e);
+            throw $e;
+        }
+    }
+
+    // --- 支出削除 ---
+    public function delete(DeleteRequest $request, DeleteService $service): JsonResponse
+    {
+        // 対象データ取得
+        $expense = Expense::findOrFail($request->expense_id);
+
+        // 認可確認
+        $user = Auth::user();
+        if ($user->role !== 'admin' && $expense->user_id !== $user->id) {
+            throw new AuthorizationException('この収入データを更新する権限がありません。');
+        }
+
+        DB::beginTransaction();
+        try {
+            // 削除処理(serviceクラス使用)
+            $service($expense);
+
+            DB::commit();
+
+            return response()->json([
+                'result' => true,
             ]);
         } catch (Exception $e) {
             DB::rollBack();

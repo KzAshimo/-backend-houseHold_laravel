@@ -38,6 +38,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
         Route::prefix('{expense_id}')->group(function(){
             Route::get('/', [ExpenseController::class, 'show']); // 支出 詳細取得
             Route::put('/', [ExpenseController::class, 'update']); // 支出 編集
+            Route::delete('/', [ExpenseController::class, 'delete']); // 支出 削除
         });
     });
 });

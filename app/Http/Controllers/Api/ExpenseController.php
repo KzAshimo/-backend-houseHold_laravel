@@ -114,4 +114,10 @@ class ExpenseController extends Controller
             throw $e;
         }
     }
+
+    // --- 支出削除 ---
+    public function delete()
+    {
+        response()->json();
+    }
 }

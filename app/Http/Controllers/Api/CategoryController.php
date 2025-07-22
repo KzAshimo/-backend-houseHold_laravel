@@ -6,12 +6,14 @@ use App\Dto\Category\ShowDto;
 use App\Dto\Category\StoreDto;
 use App\Dto\Category\UpdateDto;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Category\DeleteRequest;
 use App\Http\Requests\Category\ShowRequest;
 use App\Http\Requests\Category\StoreRequest;
 use App\Http\Requests\Category\UpdateRequest;
 use App\Http\Resources\Category\IndexResource;
 use App\Http\Resources\Category\ShowResource;
 use App\Models\Category;
+use App\Services\Category\DeleteService;
 use App\Services\Category\IndexService;
 use App\Services\Category\ShowService;
 use App\Services\Category\StoreService;
@@ -114,8 +116,31 @@ class CategoryController extends Controller
     }
 
     // --- カテゴリ削除 ---
-    public function delete()
+    public function delete(DeleteRequest $request, DeleteService $service): JsonResponse
     {
-        return response()->json();
+        // 対象データ取得
+        $category = Category::findOrFail($request->category_id);
+
+        // 認可確認
+        $user = Auth::user();
+        if ($user->role !== 'admin' && $category->user_id !== $user->id) {
+            throw new AuthorizationException('このカテゴリデータを更新する権限がありません。');
+        }
+
+        DB::beginTransaction();
+        try {
+            // 削除処理：serviceクラス使用
+            $service($category);
+
+            DB::commit();
+
+            return response()->json([
+                'result' => true,
+            ]);
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error($e);
+            throw $e;
+        }
     }
 }

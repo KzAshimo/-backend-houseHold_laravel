@@ -19,4 +19,10 @@ class CategoryController extends Controller
         // データを整形し返却：resourceクラス使用
         return IndexResource::collection($categories);
     }
+
+    // --- カテゴリ新規登録 ---
+    public function store()
+    {
+        return response()->json();
+    }
 }

@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Dto\Category\ShowDto;
 use App\Dto\Category\StoreDto;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Category\ShowRequest;
 use App\Http\Requests\Category\StoreRequest;
 use App\Http\Resources\Category\IndexResource;
+use App\Http\Resources\Category\ShowResource;
 use App\Services\Category\IndexService;
+use App\Services\Category\ShowService;
 use App\Services\Category\StoreService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -53,5 +57,18 @@ class CategoryController extends Controller
             Log::error($e);
             throw $e;
         }
+    }
+
+    // --- カテゴリ詳細取得 ---
+    public function show(ShowRequest $request, ShowService $service): ShowResource
+    {
+        // ルートパラメータをdtoへ渡す
+        $dto = new ShowDto((int)$request->route('category_id'));
+
+        // 対象データ取得：serviceクラス使用
+        $category = $service($dto);
+
+        //データを整形し返却：resourceクラス使用
+        return new ShowResource($category);
     }
 }

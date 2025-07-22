@@ -6,23 +6,24 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class ShowRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
+    #[\Override]
+    protected function prepareForValidation()
     {
-        return false;
+        // URLパラメータからcategory_id取得
+        $this->merge([
+            'category_id' => $this->route('category_id'),
+        ]);
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
     public function rules(): array
     {
         return [
-            //
+            'category_id' => ['required', 'integer', 'exists:categories,id'],
         ];
     }
 }

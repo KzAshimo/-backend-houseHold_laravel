@@ -2,9 +2,9 @@
 
 namespace App\Enums\Category;
 
-class ShowDto{
+class ShowDto
+{
     public function __construct(
-        //
-    )
-    {}
+        public readonly int $id,
+    ) {}
 }

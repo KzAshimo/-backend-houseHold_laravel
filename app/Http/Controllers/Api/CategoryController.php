@@ -4,15 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Dto\Category\ShowDto;
 use App\Dto\Category\StoreDto;
+use App\Dto\Category\UpdateDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\ShowRequest;
 use App\Http\Requests\Category\StoreRequest;
+use App\Http\Requests\Category\UpdateRequest;
 use App\Http\Resources\Category\IndexResource;
 use App\Http\Resources\Category\ShowResource;
+use App\Models\Category;
 use App\Services\Category\IndexService;
 use App\Services\Category\ShowService;
 use App\Services\Category\StoreService;
+use App\Services\Category\UpdateService;
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
@@ -72,8 +77,38 @@ class CategoryController extends Controller
         return new ShowResource($category);
     }
 
-    public function update()
+    public function update(UpdateRequest $request, UpdateService $service): JsonResponse
     {
-        return response()->json();
+        // 対象データ取得
+        $category = Category::findOrFail($request->category_id);
+
+        // 認可処理
+        $user = Auth::user();
+        if ($user->role !== 'admin' && $category->user_id !== $user->id) {
+            throw new AuthorizationException('このカテゴリデータを更新する権限がありません。');
+        }
+
+        DB::beginTransaction();
+        try {
+            // リクエストデータをdtoへ渡す
+            $dto = new UpdateDto(
+                name: $request->name,
+                type: $request->type,
+            );
+
+            // 編集処理：serviceクラス使用
+            $service($dto, $category);
+
+            DB::commit();
+
+            return response()->json([
+                'result' => true,
+                'category' => $category,
+            ]);
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error($e);
+            throw $e;
+        }
     }
 }

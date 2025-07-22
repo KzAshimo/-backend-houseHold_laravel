@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Dto\Category\StoreDto;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Category\StoreRequest;
 use App\Http\Resources\Category\IndexResource;
 use App\Services\Category\IndexService;
-use Illuminate\Http\Request;
+use App\Services\Category\StoreService;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
@@ -21,8 +28,30 @@ class CategoryController extends Controller
     }
 
     // --- カテゴリ新規登録 ---
-    public function store()
+    public function store(StoreRequest $request, StoreService $service): JsonResponse
     {
-        return response()->json();
+        // リクエストデータをdtoへ渡す
+        $dto = new StoreDto(
+            userId: Auth::user()->id,
+            name: $request->input('name'),
+            type: $request->input('type'),
+        );
+
+        DB::beginTransaction();
+        try {
+            // 支出データを一時保存：serviceクラス使用
+            $category = $service($dto);
+
+            DB::commit();
+
+            return response()->json([
+                'result' => true,
+                'category' => $category,
+            ]);
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error($e);
+            throw $e;
+        }
     }
 }

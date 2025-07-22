@@ -54,4 +54,10 @@ class CategoryController extends Controller
             throw $e;
         }
     }
+
+    // --- カテゴリ詳細取得 ---
+    public function show()
+    {
+        return response()->json();
+    }
 }

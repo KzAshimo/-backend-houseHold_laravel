@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
         Route::get('index', [CategoryController::class, 'index']); //カテゴリ 一覧取得
         Route::post('store', [CategoryController::class, 'store']); // カテゴリ 新規登録
         Route::prefix('{category_id}')->group(function(){
-            Route::get('/', [CategoryController::class, 'store']); // カテゴリ 詳細取得
+            Route::get('/', [CategoryController::class, 'show']); // カテゴリ 詳細取得
         });
     });
 

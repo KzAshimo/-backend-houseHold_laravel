@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums\Category;
+namespace App\Dto\Category;
 
 class ShowDto
 {

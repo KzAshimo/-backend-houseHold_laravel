@@ -77,6 +77,7 @@ class CategoryController extends Controller
         return new ShowResource($category);
     }
 
+    // --- カテゴリ編集 ---
     public function update(UpdateRequest $request, UpdateService $service): JsonResponse
     {
         // 対象データ取得
@@ -110,5 +111,11 @@ class CategoryController extends Controller
             Log::error($e);
             throw $e;
         }
+    }
+
+    // --- カテゴリ削除 ---
+    public function delete()
+    {
+        return response()->json();
     }
 }

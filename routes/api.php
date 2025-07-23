@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ExpenseController;
 use App\Http\Controllers\Api\IncomeController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 // ユーザ認証必要なし
@@ -32,7 +33,6 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
         });
     });
 
-
     // 収入関係
     Route::prefix('income')->group(function () {
         Route::get('index', [IncomeController::class, 'index']); // 収入 一覧取得
@@ -53,5 +53,10 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
             Route::put('/', [ExpenseController::class, 'update']); // 支出 編集
             Route::delete('/', [ExpenseController::class, 'delete']); // 支出 削除
         });
+    });
+
+    // お知らせ関係
+    Route::prefix('notification')->group(function() {
+        Route::get('index', [NotificationController::class, 'index']); // お知らせ一覧取得
     });
 });

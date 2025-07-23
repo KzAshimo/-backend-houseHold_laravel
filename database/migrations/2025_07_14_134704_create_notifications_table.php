@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('start_date')->comment('表示開始日');
             $table->date('end_date')->comment('表示終了日');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

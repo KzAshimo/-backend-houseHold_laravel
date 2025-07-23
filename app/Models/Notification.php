@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Notification extends Model
 {
+    use SoftDeletes;
         /**
      * モデルと関連しているテーブル
      *
@@ -20,6 +22,7 @@ class Notification extends Model
      */
     protected $fillable = [
         'title',
+        'user_id',
         'content',
         'type',
         'start_date',

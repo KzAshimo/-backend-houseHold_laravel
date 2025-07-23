@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ExpenseController;
 use App\Http\Controllers\Api\IncomeController;
 use App\Http\Controllers\Api\UserController;
@@ -20,6 +21,18 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
         Route::get('show', [UserController::class, 'show']); // ユーザ 情報取得
     });
 
+    // カテゴリ関係
+    Route::prefix('category')->group(function () {
+        Route::get('index', [CategoryController::class, 'index']); //カテゴリ 一覧取得
+        Route::post('store', [CategoryController::class, 'store']); // カテゴリ 新規登録
+        Route::prefix('{category_id}')->group(function(){
+            Route::get('/', [CategoryController::class, 'show']); // カテゴリ 詳細取得
+            Route::put('/', [CategoryController::class, 'update']); // カテゴリ 編集
+            Route::delete('/', [CategoryController::class, 'delete']); // カテゴリ 削除
+        });
+    });
+
+
     // 収入関係
     Route::prefix('income')->group(function () {
         Route::get('index', [IncomeController::class, 'index']); // 収入 一覧取得
@@ -32,10 +45,10 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     });
 
     // 支出関係
-    Route::prefix('expense')->group(function() {
+    Route::prefix('expense')->group(function () {
         Route::get('index', [ExpenseController::class, 'index']); // 支出 一覧取得
         Route::post('store', [ExpenseController::class, 'store']); // 支出 新規登録
-        Route::prefix('{expense_id}')->group(function(){
+        Route::prefix('{expense_id}')->group(function () {
             Route::get('/', [ExpenseController::class, 'show']); // 支出 詳細取得
             Route::put('/', [ExpenseController::class, 'update']); // 支出 編集
             Route::delete('/', [ExpenseController::class, 'delete']); // 支出 削除

@@ -58,5 +58,6 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     // お知らせ関係
     Route::prefix('notification')->group(function() {
         Route::get('index', [NotificationController::class, 'index']); // お知らせ一覧取得
+        Route::post('store', [NotificationController::class, 'store']); // お知らせ新規登録
     });
 });

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Notification extends Model
 {
     use SoftDeletes;
-        /**
+    /**
      * モデルと関連しているテーブル
      *
      * @var string
@@ -29,10 +29,15 @@ class Notification extends Model
         'end_date',
     ];
 
-        // リレーション:notification_view
+    // リレーション:user
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // リレーション:notification_view
     public function notification_views()
     {
         return $this->hasMany(NotificationView::class);
     }
-
 }

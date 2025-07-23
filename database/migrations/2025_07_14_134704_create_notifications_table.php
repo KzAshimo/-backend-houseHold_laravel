@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->foreignId('user_id')->constrained()->comment('ユーザid');
             $table->string('title', 50)->comment('タイトル');
             $table->string('content', 255)->comment('本文');
-            $table->string('type')->comment('表示形式(1回 / 毎回)'); //Enumに修正予定
+            $table->enum('type', ['always', 'once'])->comment('表示形式(1回 / 毎回)');
             $table->date('start_date')->comment('表示開始日');
             $table->date('end_date')->comment('表示終了日');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

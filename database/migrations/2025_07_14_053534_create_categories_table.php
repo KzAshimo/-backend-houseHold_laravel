@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name', 50)->nullable()->comment('カテゴリ名');
             $table->enum('type', ['income', 'expense'])->comment('収入 / 支出'); // 今後Enumで修正予定
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

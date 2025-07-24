@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Notification;
 
+use App\Enums\Notification\TypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class StoreRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class StoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,12 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'user_id' => ['required', 'integer', 'exists:users,id'],
+            'title' => ['required', 'string', 'max:50'],
+            'content' => ['required', 'string', 'max:255'],
+            'type' => ['required', new Enum(TypeEnum::class)],
+            'start_date' => ['required', 'date', 'before_or_equal:end_date'],
+            'end_date' => ['required', 'date', 'after_or_equal:start_date'],
         ];
     }
 }

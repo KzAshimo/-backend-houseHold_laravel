@@ -58,4 +58,9 @@ class NotificationController extends Controller
             throw $e;
         }
     }
+
+    public function show()
+    {
+        return response()->json();
+    }
 }

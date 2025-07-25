@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Dto\Notification\ShowDto;
 use App\Dto\Notification\StoreDto;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Notification\ShowRequest;
 use App\Http\Requests\Notification\StoreRequest;
 use App\Http\Resources\Notification\IndexResource;
+use App\Http\Resources\Notification\ShowResource;
 use App\Services\Notification\IndexService;
+use App\Services\Notification\ShowService;
 use App\Services\Notification\StoreService;
 use Carbon\Carbon;
 use Exception;
@@ -59,8 +63,16 @@ class NotificationController extends Controller
         }
     }
 
-    public function show()
+    // --- お知らせ詳細取得 ---
+    public function show(ShowRequest $request, ShowService $service): ShowResource
     {
-        return response()->json();
+        // ルートパラメータをdtoへ渡す
+        $dto = new ShowDto((int)$request->route('notification_id'));
+
+        // 対象データ取得：serviceクラス使用
+        $notification = $service($dto);
+
+        //データを整形し返却：resourceクラス使用
+        return new ShowResource($notification);
     }
 }

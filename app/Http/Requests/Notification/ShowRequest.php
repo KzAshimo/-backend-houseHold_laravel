@@ -6,12 +6,18 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class ShowRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+    #[\Override]
+    protected function prepareForValidation()
+    {
+        // URLパラメータからnotification_id取得
+        $this->merge([
+            'notification_id' => $this->route('notification_id'),
+        ]);
+    }
+
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +28,7 @@ class ShowRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'notification_id' => ['required', 'integer', 'exists:notifications,id'],
         ];
     }
 }

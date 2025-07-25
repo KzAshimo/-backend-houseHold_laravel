@@ -75,4 +75,10 @@ class NotificationController extends Controller
         //データを整形し返却：resourceクラス使用
         return new ShowResource($notification);
     }
+
+    // --- お知らせ編集 ---
+    public function update()
+    {
+        return response()->json();
+    }
 }

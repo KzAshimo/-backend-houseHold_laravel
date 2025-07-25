@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests\Notification;
 
+use App\Enums\Notification\TypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
-class ShowRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     #[\Override]
     protected function prepareForValidation()
@@ -20,10 +22,15 @@ class ShowRequest extends FormRequest
         return true;
     }
 
+
     public function rules(): array
     {
         return [
-            'notification_id' => ['required', 'integer', 'exists:notifications,id'],
+            'title' => ['required', 'string', 'max:50'],
+            'content' => ['required', 'string', 'max:255'],
+            'type' => ['required', new Enum(TypeEnum::class)],
+            'start_date' => ['required', 'date'],
+            'end_date' => ['required', 'date', 'after_or_equal:start_date'],
         ];
     }
 }

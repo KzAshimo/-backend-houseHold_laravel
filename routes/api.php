@@ -62,6 +62,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
         Route::prefix('{notification_id}')->group(function() {
             Route::get('/', [NotificationController::class, 'show']); // お知らせ 詳細取得
             Route::put('/', [NotificationController::class, 'update']); //お知らせ 編集
+            Route::delete('/', [NotificationController::class, 'delete']); // お知らせ 削除
         });
     });
 });

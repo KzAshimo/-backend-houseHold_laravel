@@ -6,12 +6,14 @@ use App\Dto\Notification\ShowDto;
 use App\Dto\Notification\StoreDto;
 use App\Dto\Notification\UpdateDto;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Notification\DeleteRequest;
 use App\Http\Requests\Notification\ShowRequest;
 use App\Http\Requests\Notification\StoreRequest;
 use App\Http\Requests\Notification\UpdateRequest;
 use App\Http\Resources\Notification\IndexResource;
 use App\Http\Resources\Notification\ShowResource;
 use App\Models\Notification;
+use App\Services\Notification\DeleteService;
 use App\Services\Notification\IndexService;
 use App\Services\Notification\ShowService;
 use App\Services\Notification\StoreService;
@@ -121,8 +123,31 @@ class NotificationController extends Controller
     }
 
     // --- お知らせ削除 ---
-    public function delete()
+    public function delete(DeleteRequest $request, DeleteService $service): JsonResponse
     {
-        return response()->json();
+        // 対象データ取得
+        $notification = Notification::findOrFail($request->notification_id);
+
+        // 認可確認
+        $user = Auth::user();
+        if ($user->role !== 'admin' && $notification->user_id !== $user->id) {
+            throw new AuthorizationException('このお知らせデータを更新する権限がありません。');
+        }
+
+        DB::beginTransaction();
+        try {
+            // 削除処理：serviceクラス使用
+            $service($notification);
+
+            DB::commit();
+
+            return response()->json([
+                'result' => true,
+            ]);
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error($e);
+            throw $e;
+        }
     }
 }

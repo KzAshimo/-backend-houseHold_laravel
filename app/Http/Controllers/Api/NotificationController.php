@@ -119,4 +119,10 @@ class NotificationController extends Controller
             throw $e;
         }
     }
+
+    // --- お知らせ削除 ---
+    public function delete()
+    {
+        return response()->json();
+    }
 }

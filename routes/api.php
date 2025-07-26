@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\ExpenseController;
 use App\Http\Controllers\Api\IncomeController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\NotificationViewController;
 use Illuminate\Support\Facades\Route;
 
 // ユーザ認証必要なし
@@ -64,5 +65,10 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
             Route::put('/', [NotificationController::class, 'update']); //お知らせ 編集
             Route::delete('/', [NotificationController::class, 'delete']); // お知らせ 削除
         });
+    });
+
+    // お知らせ既読関係
+    Route::prefix('notification_view')->group(function() {
+        Route::post('{notification_id}', [NotificationViewController::class, 'store']); // お知らせ既読 登録
     });
 });

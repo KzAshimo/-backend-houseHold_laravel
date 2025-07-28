@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(IncomeSeeder::class);
         $this->call(ExpenseSeeder::class);
         $this->call(NotificationSeeder::class);
+        $this->call(NotificationViewSeeder::class);
     }
 
 }

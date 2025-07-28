@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\NotificationView;
+namespace App\Services\NotificationView;
 
 use App\Models\NotificationView;
 

@@ -12,7 +12,7 @@ class IndexResource extends JsonResource
         return [
             'id' => $this->id,
             'user' => $this->user->name,
-            'notification' => $this->notification->title,
+            'title' => $this->notification->title,
             'viewed_at' => $this->viewed_at,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

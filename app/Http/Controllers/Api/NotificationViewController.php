@@ -7,11 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\NotificationView\StoreRequest;
 use App\Http\Resources\NotificationView\IndexResource;
 use App\Models\Notification;
-use App\Service\NotificationView\IndexService;
+use App\Services\NotificationView\IndexService;
 use App\Services\NotificationView\StoreService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -48,7 +49,7 @@ class NotificationViewController extends Controller
     }
 
     // --- お知らせ既読 一覧取得 ---
-    public function index(IndexService $service)
+    public function index(IndexService $service): JsonResource
     {
         // お知らせ既読一覧データ取得：serviceクラス使用
         $notificationView = $service();

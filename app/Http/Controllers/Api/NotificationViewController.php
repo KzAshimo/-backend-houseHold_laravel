@@ -44,4 +44,10 @@ class NotificationViewController extends Controller
             throw $e;
         }
     }
+
+    // --- お知らせ既読 一覧取得 ---
+    public function index()
+    {
+        return response()->json();
+    }
 }

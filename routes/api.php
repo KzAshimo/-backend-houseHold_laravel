@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ExpenseController;
 use App\Http\Controllers\Api\IncomeController;
+use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,7 +33,6 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
         });
     });
 
-
     // 収入関係
     Route::prefix('income')->group(function () {
         Route::get('index', [IncomeController::class, 'index']); // 収入 一覧取得
@@ -52,6 +52,17 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
             Route::get('/', [ExpenseController::class, 'show']); // 支出 詳細取得
             Route::put('/', [ExpenseController::class, 'update']); // 支出 編集
             Route::delete('/', [ExpenseController::class, 'delete']); // 支出 削除
+        });
+    });
+
+    // お知らせ関係
+    Route::prefix('notification')->group(function() {
+        Route::get('index', [NotificationController::class, 'index']); // お知らせ 一覧取得
+        Route::post('store', [NotificationController::class, 'store']); // お知らせ 新規登録
+        Route::prefix('{notification_id}')->group(function() {
+            Route::get('/', [NotificationController::class, 'show']); // お知らせ 詳細取得
+            Route::put('/', [NotificationController::class, 'update']); //お知らせ 編集
+            Route::delete('/', [NotificationController::class, 'delete']); // お知らせ 削除
         });
     });
 });

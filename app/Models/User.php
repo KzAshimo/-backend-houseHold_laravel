@@ -78,6 +78,12 @@ class User extends Authenticatable
         return $this->hasMany(Export::class);
     }
 
+    // リレーション:notification
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+
     // リレーション:notification_view
     public function notification_views()
     {

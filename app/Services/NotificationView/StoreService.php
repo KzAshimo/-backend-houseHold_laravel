@@ -13,10 +13,8 @@ class StoreService
             [
                 'user_id' => $dto->userId,
                 'notification_id' => $dto->notificationId,
-            ],
-            [
                 'viewed_at' => now(),
-            ]
+            ],
         );
     }
 }

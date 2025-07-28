@@ -23,6 +23,7 @@ class NotificationView extends Model
     protected $fillable = [
         'user_id',
         'notification_id',
+        'viewed_at',
     ];
 
     // リレーション:user

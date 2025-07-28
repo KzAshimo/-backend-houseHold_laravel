@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Dto\NotificationView\StoreDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NotificationView\StoreRequest;
+use App\Http\Resources\NotificationView\IndexResource;
 use App\Models\Notification;
+use App\Service\NotificationView\IndexService;
 use App\Services\NotificationView\StoreService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -46,8 +48,12 @@ class NotificationViewController extends Controller
     }
 
     // --- お知らせ既読 一覧取得 ---
-    public function index()
+    public function index(IndexService $service)
     {
-        return response()->json();
+        // お知らせ既読一覧データ取得：serviceクラス使用
+        $notificationView = $service();
+
+        // データを整形し返却：resourceクラス使用
+        return IndexResource::collection($notificationView);
     }
 }

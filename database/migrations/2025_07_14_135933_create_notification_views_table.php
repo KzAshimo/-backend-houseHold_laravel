@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('notification_id')->constrained()->comment('お知らせid');
             $table->timestamp('viewed_at')->comment('回覧日時');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

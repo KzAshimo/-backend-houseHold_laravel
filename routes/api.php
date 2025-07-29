@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ExpenseController;
+use App\Http\Controllers\Api\ExportController;
 use App\Http\Controllers\Api\IncomeController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\NotificationViewController;
@@ -71,5 +72,10 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::prefix('notification_view')->group(function() {
         Route::post('{notification_id}', [NotificationViewController::class, 'store']); // お知らせ既読 登録
         Route::get('index', [NotificationViewController::class, 'index']); // お知らせ既読 一覧取得
+    });
+
+    // CSV出力関係
+    Route::prefix('export')->group(function() {
+        Route::get('/', [ExportController::class, 'export']); // csv ダウンロード
     });
 });

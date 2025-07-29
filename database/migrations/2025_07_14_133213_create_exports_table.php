@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('exports', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->foreignId('user_id')->constrained()->comment('ユーザid');
-            $table->enum('type', ['income', 'expense', 'all'])->comment('出力対象 収入 / 支出 / 両方');
+            $table->enum('type', ['income', 'expense', 'all'])->comment('出力対象 [ 収入 / 支出 / 両方 ]');
+            $table->enum('status', ['pending', 'processing', 'complete', 'failed'])->default('pending')->comment('状態 [受付 / 生成中 / 完了 / 失敗]');
             $table->date('period_from')->comment('開始日(集計対象)');
             $table->date('period_to')->comment('終了日(集計対象)');
             $table->string('file_name', 50)->nullable()->comment('ファイル名(任意)');
+            $table->string('file_path')->nullable()->comment('生成ファイルパス');
             $table->timestamps();
         });
     }

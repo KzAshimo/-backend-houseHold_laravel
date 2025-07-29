@@ -76,6 +76,6 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
 
     // CSV出力関係
     Route::prefix('export')->group(function() {
-        Route::get('/', [ExportController::class, 'export']); // csv ダウンロード
+        //
     });
 });

@@ -7,5 +7,8 @@ use Illuminate\Http\Request;
 
 class ExportController extends Controller
 {
-    //
+    public function store()
+    {
+        return response()->json();
+    }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Export;
 
+use App\Enums\Export\TypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class StoreRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class StoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,10 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'type' => ['required', new Enum(TypeEnum::class)],
+            'period_from' => ['required', 'date'],
+            'period_to' => ['required', 'date', 'after_or_equal:period_from'],
+            'file_name' => ['nullable', 'string', 'max:50'],
         ];
     }
 }

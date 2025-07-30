@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\IncomeController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\NotificationViewController;
 use App\Http\Controllers\Api\UserController;
+use App\Models\Export;
 use Illuminate\Support\Facades\Route;
 
 // ユーザ認証必要なし
@@ -70,12 +71,12 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
 
     // お知らせ既読関係
     Route::prefix('notification_view')->group(function() {
-        Route::post('{notification_id}', [NotificationViewController::class, 'store']); // お知らせ既読 登録
+        Route::post('{notification_id}', [NotificationViewController::class, 'store']); // お知らせ既読 新規登録
         Route::get('index', [NotificationViewController::class, 'index']); // お知らせ既読 一覧取得
     });
 
     // CSV出力関係
     Route::prefix('export')->group(function() {
-        //
+        Route::post('store', [ExportController::class, 'store']); // csv出力 新規登録
     });
 });

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Export;
+namespace App\Services\Export;
 
 use App\Dto\Export\StoreDto;
 use App\Models\Export;

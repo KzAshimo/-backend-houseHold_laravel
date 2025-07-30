@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Dto\Export\StoreDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Export\StoreRequest;
-use App\Service\Export\StoreService;
+use App\Services\Export\StoreService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;

@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Dto\Export\ExportDto;
 use App\Dto\Export\StoreDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Export\StoreRequest;
+use App\Models\Export;
+use App\Services\Export\ExportService;
 use App\Services\Export\StoreService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -36,6 +39,30 @@ class ExportController extends Controller
             return response()->json([
                 'result' => true,
                 'export' => $export,
+            ]);
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error($e);
+            throw $e;
+        }
+    }
+
+    // --- csvファイル作成 ---
+    public function export(int $exportId, ExportService $service): JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            // 対象データを検索
+            $export = Export::findOrFail($exportId);
+
+            // 作成処理：serviceクラスを使用
+            $updateExport = $service($export);
+
+            DB::commit();
+
+            return response()->json([
+                'result' => true,
+                'export' => $updateExport,
             ]);
         } catch (Exception $e) {
             DB::rollBack();

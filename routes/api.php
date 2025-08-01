@@ -77,6 +77,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
 
     // CSV関係
     Route::prefix('export')->group(function() {
+        Route::get('index', [ExportController::class, 'index']); // csv 一覧取得
         Route::post('store', [ExportController::class, 'store']); // csv 新規登録
         Route::prefix('{export_id}')->group(function(){
         Route::post('/', [ExportController::class, 'export']); // csv ファイル作成

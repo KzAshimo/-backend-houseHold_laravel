@@ -21,6 +21,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ExportController extends Controller
 {
+    // --- csvデータ一覧取得 ---
+    public function index()
+    {
+        return response()->json();
+    }
     // --- csv出力データ新規登録 ---
     public function store(StoreRequest $request, StoreService $service): JsonResponse
     {

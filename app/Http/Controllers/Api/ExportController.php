@@ -5,13 +5,16 @@ namespace App\Http\Controllers\Api;
 use App\Dto\Export\StoreDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Export\StoreRequest;
+use App\Http\Resources\Export\IndexResource;
 use App\Models\Export;
 use App\Services\Export\DownloadService;
 use App\Services\Export\ExportService;
+use App\Services\Export\IndexService;
 use App\Services\Export\StoreService;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -22,10 +25,15 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ExportController extends Controller
 {
     // --- csvデータ一覧取得 ---
-    public function index()
+    public function index(IndexService $service): JsonResource
     {
-        return response()->json();
+        // csvデータ一覧取得：serviceクラス使用
+        $export = $service();
+
+        // データを整形し返却：resourceクラス使用
+        return IndexResource::collection($export);
     }
+
     // --- csv出力データ新規登録 ---
     public function store(StoreRequest $request, StoreService $service): JsonResponse
     {

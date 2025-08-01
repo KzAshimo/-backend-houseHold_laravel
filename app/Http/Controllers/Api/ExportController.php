@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Dto\Export\ExportDto;
 use App\Dto\Export\StoreDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Export\StoreRequest;
@@ -69,5 +68,11 @@ class ExportController extends Controller
             Log::error($e);
             throw $e;
         }
+    }
+
+    // --- csvファイル ダウンロード ---
+    public function download()
+    {
+        return response()->json();
     }
 }

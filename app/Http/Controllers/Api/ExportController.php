@@ -82,7 +82,7 @@ class ExportController extends Controller
 
         $filePath = $service($export);
 
-        $downloadName = ($export->file_name ?? 'export_' . $export->id) . 'csv';
+        $downloadName = ($export->file_name ?? 'export_' . $export->id) . '.csv';
 
         return Storage::disk('local')->download($filePath, $downloadName,[
             'Content-Type' => 'text/csv',

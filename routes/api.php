@@ -75,9 +75,12 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
         Route::get('index', [NotificationViewController::class, 'index']); // お知らせ既読 一覧取得
     });
 
-    // CSV出力関係
+    // CSV関係
     Route::prefix('export')->group(function() {
-        Route::post('store', [ExportController::class, 'store']); // csv出力 新規登録
-        Route::post('{export_id}', [ExportController::class, 'export']); // csv出力 ファイル作成
+        Route::post('store', [ExportController::class, 'store']); // csv 新規登録
+        Route::prefix('{export_id}')->group(function(){
+        Route::post('/', [ExportController::class, 'export']); // csv ファイル作成
+        Route::get('/', [ExportController::class, 'download']); // csv 出力
+        });
     });
 });

@@ -2,18 +2,22 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Dto\Export\ExportDto;
 use App\Dto\Export\StoreDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Export\StoreRequest;
 use App\Models\Export;
+use App\Services\Export\DownloadService;
 use App\Services\Export\ExportService;
 use App\Services\Export\StoreService;
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ExportController extends Controller
 {
@@ -69,5 +73,19 @@ class ExportController extends Controller
             Log::error($e);
             throw $e;
         }
+    }
+
+    // --- csvファイル ダウンロード ---
+    public function download(int $exportId, DownloadService $service): StreamedResponse
+    {
+        $export = Export::findOrFail($exportId);
+
+        $filePath = $service($export);
+
+        $downloadName = ($export->file_name ?? 'export_' . $export->id) . '.csv';
+
+        return Storage::disk('local')->download($filePath, $downloadName,[
+            'Content-Type' => 'text/csv',
+        ]);
     }
 }

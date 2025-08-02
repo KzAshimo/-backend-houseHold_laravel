@@ -53,4 +53,29 @@ class StoreTest extends TestCase
             'end_date'   => $end->toDateTimeString(),
         ]);
     }
+
+        public function test_storeNotification_バリデーションエラー(): void
+    {
+        // ログイン用にユーザデータ取得
+        $user = User::first();
+
+        // ログイン処理
+        $this->actingAs($user);
+
+        $start = now()->startOfSecond();
+        $end = now()->addMonth()->startOfSecond();
+
+        $data = [
+            'user_id' => $user->id,
+            'title' => 'testについて',
+            'content' => 11111,
+            'type' => 'always',
+            'start_date' => $start->toISOString(),
+            'end_date' => $end->toISOString(),
+        ];
+
+        $response = $this->postJson(('api/v1/notification/store'), $data);
+
+        $response->assertStatus(422);
+    }
 }

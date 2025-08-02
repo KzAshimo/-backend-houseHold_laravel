@@ -24,7 +24,6 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required', 'integer', 'exists:users,id'],
             'title' => ['required', 'string', 'max:50'],
             'content' => ['required', 'string', 'max:255'],
             'type' => ['required', new Enum(TypeEnum::class)],

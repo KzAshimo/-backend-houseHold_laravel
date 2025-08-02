@@ -48,7 +48,7 @@ class ExportController extends Controller
 
         DB::beginTransaction();
         try {
-            // csv出力データを一時保存
+            // csv出力データを一時保存：serviceクラスを使用
             $export = $service($dto);
 
             DB::commit();

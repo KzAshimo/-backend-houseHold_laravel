@@ -18,6 +18,7 @@ class UserController extends Controller
     {
         DB::beginTransaction();
         try {
+            // ユーザデータを一時保存：serviceクラス使用
             $user = $service($request->validated());
 
             DB::commit();

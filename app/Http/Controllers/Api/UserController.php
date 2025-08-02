@@ -38,6 +38,8 @@ class UserController extends Controller
     public function show()
     {
         $user = Auth::user();
+
+        // データ返却：resourceクラス使用
         return new ShowResource($user);
     }
 }

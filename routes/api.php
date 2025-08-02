@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ExpenseController;
+use App\Http\Controllers\Api\ExportController;
 use App\Http\Controllers\Api\IncomeController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\NotificationViewController;
 use App\Http\Controllers\Api\UserController;
+use App\Models\Export;
 use Illuminate\Support\Facades\Route;
 
 // ユーザ認証必要なし
@@ -69,7 +71,17 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
 
     // お知らせ既読関係
     Route::prefix('notification_view')->group(function() {
-        Route::post('{notification_id}', [NotificationViewController::class, 'store']); // お知らせ既読 登録
+        Route::post('{notification_id}', [NotificationViewController::class, 'store']); // お知らせ既読 新規登録
         Route::get('index', [NotificationViewController::class, 'index']); // お知らせ既読 一覧取得
+    });
+
+    // CSV関係
+    Route::prefix('export')->group(function() {
+        Route::get('index', [ExportController::class, 'index']); // csv 一覧取得
+        Route::post('store', [ExportController::class, 'store']); // csv 新規登録
+        Route::prefix('{export_id}')->group(function(){
+        Route::post('/', [ExportController::class, 'export']); // csv ファイル作成
+        Route::get('/', [ExportController::class, 'download']); // csv 出力
+        });
     });
 });

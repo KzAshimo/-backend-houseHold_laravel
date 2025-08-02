@@ -21,9 +21,11 @@ class Export extends Model
     protected $fillable = [
         'user_id',
         'type',
+        'status',
         'period_from',
         'period_to',
         'file_name',
+        'file_path',
     ];
 
     // リレーション:user

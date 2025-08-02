@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ExpenseSeeder::class);
         $this->call(NotificationSeeder::class);
         $this->call(NotificationViewSeeder::class);
+        $this->call(ExportSeeder::class);
     }
 
 }

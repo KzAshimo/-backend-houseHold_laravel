@@ -3,6 +3,7 @@
 namespace Tests\Feature\Export;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -26,8 +27,10 @@ class StoreTest extends TestCase
         // ログイン処理
         $this->actingAs($user);
 
-        $from = now()->startOfSecond();
-        $to = now()->addMonth()->startOfSecond();
+        Carbon::setTestNow('2025-08-02 07:15:00');
+
+        $from = Carbon::now();
+        $to = Carbon::now()->addMonth();
 
         $data = [
             'type' => 'income',
@@ -44,9 +47,11 @@ class StoreTest extends TestCase
             'user_id' => $user->id,
             'type' => 'income',
             'status' => 'pending',
-            'period_from' => $from->toDateTimeString(),
-            'period_to' => $to->toDateTimeString(),
+            'period_from' => $from->toDateString(),
+            'period_to' => $to->toDateString(),
         ]);
+
+        Carbon::setTestNow(null);
     }
 
     public function test_storeExport_バリデーションエラー(): void

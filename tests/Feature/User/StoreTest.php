@@ -28,4 +28,17 @@ class StoreTest extends TestCase
             'role' => RoleEnum::USER,
         ]);
     }
+
+    public function test_storeUser_バリデーションエラー(): void
+    {
+        $response = $this->postJson('api/v1/user/store', [
+            'name' => 111111,
+            'email' => 'test@sample.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            'role' => 'user',
+        ]);
+
+        $response->assertStatus(422);
+    }
 }

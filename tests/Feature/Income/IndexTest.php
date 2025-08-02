@@ -30,8 +30,6 @@ class IndexTest extends TestCase
 
         $incomes = Income::with(['user', 'category'])->get();
 
-        dump($response->json());
-
         $response->assertStatus(200);
 
         foreach ($incomes as $income) {

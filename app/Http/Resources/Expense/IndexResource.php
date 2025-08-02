@@ -11,8 +11,8 @@ class IndexResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => $this->user->name,
-            'category' => $this->category->name,
+            'user' => $this->whenLoaded('user', fn() => $this->user->name),
+            'category' => $this->whenLoaded('category', fn() => $this->category->name),
             'amount' => $this->amount,
             'memo' => $this->memo,
             'created_at' => $this->created_at,

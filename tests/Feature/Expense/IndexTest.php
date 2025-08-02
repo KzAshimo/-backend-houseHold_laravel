@@ -30,8 +30,6 @@ class IndexTest extends TestCase
 
         $expenses = Expense::with(['user', 'category'])->get();
 
-        dump($response->json());
-
         $response->assertStatus(200);
 
         foreach ($expenses as $expense) {

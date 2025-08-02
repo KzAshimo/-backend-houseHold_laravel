@@ -11,7 +11,7 @@ class ShowResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => $this->user->name,
+            'user' => $this->whenLoaded('user', fn ()=> $this->user->name),
             'name' => $this->name,
             'type' => $this->type,
             'created_at' => $this->created_at,

@@ -36,7 +36,7 @@ class IndexTest extends TestCase
             $response->assertJsonFragment([
                 'id' => $notificationView->id,
                 'user' => $notificationView->user->name,
-                'title' => $notificationView->notification->title,
+                'notification' => $notificationView->notification->title,
                 'created_at' => $notificationView->created_at->toJson(),
                 'updated_at' => $notificationView->updated_at->toJson(),
             ]);

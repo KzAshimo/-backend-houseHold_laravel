@@ -10,3 +10,4 @@ Route::get('/', function () {
 
 Route::post('/login', LoginController::class)->name('login');
 Route::post('/logout', LogoutController::class)->name('logout');
+

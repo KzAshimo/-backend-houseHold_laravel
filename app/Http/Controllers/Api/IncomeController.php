@@ -44,10 +44,10 @@ class IncomeController extends Controller
     public function indexCategory(IndexCategoryService $service): JsonResource
     {
         // カテゴリデータ一覧取得(serviceクラス使用)
-        $category = $service();
+        $categories = $service();
 
         // データ返却(resourceクラス使用)
-        return IndexCategoryResource::collection($category);
+        return IndexCategoryResource::collection($categories);
     }
 
     // --- 収入新規登録 ---

@@ -11,6 +11,6 @@ class IndexCategoryResource extends JsonResource
     {
         return [
             'category' => $this->whenLoaded('category', fn() => $this->category->name),
-        ]
+        ];
     }
 }

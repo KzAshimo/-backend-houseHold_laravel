@@ -41,6 +41,7 @@ Route::middleware(EnsureFrontendRequestsAreStateful::class, 'auth:sanctum')->pre
     // 収入関係
     Route::prefix('income')->group(function () {
         Route::get('index', [IncomeController::class, 'index']); // 収入 一覧取得
+        Route::get('index_category', [IncomeController::class, 'indexCategory']); // 収入 カテゴリ一覧取得
         Route::post('store', [IncomeController::class, 'store']); // 収入 新規登録
         Route::prefix('{income_id}')->group(function () {
             Route::get('/', [IncomeController::class, 'show']); // 収入 詳細取得

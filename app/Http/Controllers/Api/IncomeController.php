@@ -38,6 +38,12 @@ class IncomeController extends Controller
         return IndexResource::collection($incomes);
     }
 
+    // --- カテゴリ一覧取得 ---
+    public function indexCategory()
+    {
+        return response()->json();
+    }
+
     // --- 収入新規登録 ---
     public function store(StoreRequest $request, StoreService $service): JsonResponse
     {

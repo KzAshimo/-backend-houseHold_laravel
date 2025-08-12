@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\NotificationViewController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
 // ユーザ認証必要なし
 Route::prefix('v1')->group(function () {
@@ -19,9 +20,10 @@ Route::prefix('v1')->group(function () {
 });
 
 // ユーザ認証必要
-Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
+Route::middleware(EnsureFrontendRequestsAreStateful::class, 'auth:sanctum')->prefix('v1')->group(function () {
     // ユーザ関係
     Route::prefix('user')->group(function () {
+        Route::get('/', function (Request $request) {return $request->user();}); // ユーザログイン状態管理
         Route::get('show', [UserController::class, 'show']); // ユーザ 情報取得
     });
 

@@ -10,10 +10,12 @@ use App\Http\Requests\Income\DeleteRequest;
 use App\Http\Requests\Income\ShowRequest;
 use App\Http\Requests\Income\StoreRequest;
 use App\Http\Requests\Income\UpdateRequest;
+use App\Http\Resources\Income\IndexCategoryResource;
 use App\Http\Resources\Income\IndexResource;
 use App\Http\Resources\Income\ShowResource;
 use App\Models\Income;
 use App\Services\Income\DeleteService;
+use App\Services\Income\IndexCategoryService;
 use App\Services\Income\IndexService;
 use App\Services\Income\ShowService;
 use App\Services\Income\StoreService;
@@ -39,9 +41,13 @@ class IncomeController extends Controller
     }
 
     // --- カテゴリ一覧取得 ---
-    public function indexCategory()
+    public function indexCategory(IndexCategoryService $service): JsonResource
     {
-        return response()->json();
+        // カテゴリデータ一覧取得(serviceクラス使用)
+        $category = $service();
+
+        // データ返却(resourceクラス使用)
+        return IndexCategoryResource::collection($category);
     }
 
     // --- 収入新規登録 ---

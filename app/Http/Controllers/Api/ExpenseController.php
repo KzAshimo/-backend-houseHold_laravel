@@ -38,6 +38,12 @@ class ExpenseController extends Controller
         return IndexResource::collection($expenses);
     }
 
+    // --- 支出カテゴリ一覧取得 ---
+    public function indexCategory(): JsonResponse
+    {
+        return response()->json();
+    }
+
     // --- 支出新規登録 ---
     public function store(StoreRequest $request, StoreService $service): JsonResponse
     {

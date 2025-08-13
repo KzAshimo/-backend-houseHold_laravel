@@ -40,7 +40,7 @@ class IncomeController extends Controller
         return IndexResource::collection($incomes);
     }
 
-    // --- カテゴリ一覧取得 ---
+    // --- 収入カテゴリ一覧取得 ---
     public function indexCategory(IndexCategoryService $service): JsonResource
     {
         // カテゴリデータ一覧取得(serviceクラス使用)

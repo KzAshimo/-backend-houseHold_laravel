@@ -10,10 +10,12 @@ use App\Http\Requests\Expense\DeleteRequest;
 use App\Http\Requests\Expense\ShowRequest;
 use App\Http\Requests\Expense\StoreRequest;
 use App\Http\Requests\Expense\UpdateRequest;
+use App\Http\Resources\Expense\IndexCategoryResource;
 use App\Http\Resources\Expense\IndexResource;
 use App\Http\Resources\Expense\ShowResource;
 use App\Models\Expense;
 use App\Services\Expense\DeleteService;
+use App\Services\Expense\IndexCategoryService;
 use App\Services\Expense\IndexService;
 use App\Services\Expense\ShowService;
 use App\Services\Expense\StoreService;
@@ -39,9 +41,13 @@ class ExpenseController extends Controller
     }
 
     // --- 支出カテゴリ一覧取得 ---
-    public function indexCategory(): JsonResponse
+    public function indexCategory(IndexCategoryService $service): JsonResource
     {
-        return response()->json();
+        // カテゴリデータ一覧取得(serviceクラス使用)
+        $categories = $service();
+
+        // データ返却(resourceクラス使用)
+        return IndexCategoryResource::collection($categories);
     }
 
     // --- 支出新規登録 ---

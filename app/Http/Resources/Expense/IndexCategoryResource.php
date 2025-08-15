@@ -10,7 +10,8 @@ class IndexCategoryResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'category' => $this->whenLoaded('category', fn() => $this->category->name),
+            'id' => $this->id,
+            'name' => $this->whenLoaded('category', fn() => $this->category->name),
         ];
     }
 }

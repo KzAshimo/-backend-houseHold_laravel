@@ -53,6 +53,7 @@ Route::middleware(EnsureFrontendRequestsAreStateful::class, 'auth:sanctum')->pre
     // 支出関係
     Route::prefix('expense')->group(function () {
         Route::get('index', [ExpenseController::class, 'index']); // 支出 一覧取得
+        Route::get('index_category', [ExpenseController::class, 'indexCategory']); // 支出 カテゴリ一覧取得
         Route::post('store', [ExpenseController::class, 'store']); // 支出 新規登録
         Route::prefix('{expense_id}')->group(function () {
             Route::get('/', [ExpenseController::class, 'show']); // 支出 詳細取得

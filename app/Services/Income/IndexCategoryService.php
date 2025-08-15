@@ -9,6 +9,10 @@ class IndexCategoryService
     public function __invoke()
     {
         // カテゴリデータ取得
-        return Income::with('category')->orderBy('created_at', 'desc')->get();
+        return Income::select('category_id')
+        ->with('category')
+        ->distinct() // 重複除外
+        ->orderBy('category_id')
+        ->get();
     }
 }

@@ -35,7 +35,8 @@ class IndexCategoryTest extends TestCase
         foreach ($categories as $category) {
             $response->assertJsonFragment(
                 [
-                    'category' => $category->category->name,
+                    'id' => $category->id,
+                    'name' => $category->category->name,
                 ]
             );
         }

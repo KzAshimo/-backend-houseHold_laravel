@@ -211,7 +211,7 @@ class ExpenseSeeder extends Seeder
                 'amount' => 5500,
                 'content' => '電気代',
                 'memo' => 'test',
-                'created_at' => $now->subMouth(),
+                'created_at' => $now->subMonth(),
                 'updated_at' => $now->subMonth(),
             ],
             [
@@ -220,7 +220,7 @@ class ExpenseSeeder extends Seeder
                 'amount' => 15500,
                 'content' => 'ガス代',
                 'memo' => 'test',
-                'created_at' => $now->subMouth(),
+                'created_at' => $now->subMonth(),
                 'updated_at' => $now->subMonth(),
             ],
             [
@@ -229,7 +229,7 @@ class ExpenseSeeder extends Seeder
                 'amount' => 10000,
                 'content' => 'サブスク',
                 'memo' => 'test',
-                'created_at' => $now->subMouth(),
+                'created_at' => $now->subMonth(),
                 'updated_at' => $now->subMonth(),
             ],
             [
@@ -238,7 +238,7 @@ class ExpenseSeeder extends Seeder
                 'amount' => 6000,
                 'content' => '外食',
                 'memo' => 'test',
-                'created_at' => $now->subMouth(),
+                'created_at' => $now->subMonth(),
                 'updated_at' => $now->subMonth(),
             ],
             [
@@ -247,7 +247,7 @@ class ExpenseSeeder extends Seeder
                 'amount' => 16000,
                 'content' => '飲み会',
                 'memo' => 'test',
-                'created_at' => $now->subMouth(),
+                'created_at' => $now->subMonth(),
                 'updated_at' => $now->subMonth(),
             ],
             [
@@ -256,7 +256,7 @@ class ExpenseSeeder extends Seeder
                 'amount' => 28000,
                 'content' => '土地',
                 'memo' => 'test',
-                'created_at' => $now->subMouth(),
+                'created_at' => $now->subMonth(),
                 'updated_at' => $now->subMonth(),
             ],
             [
@@ -265,7 +265,7 @@ class ExpenseSeeder extends Seeder
                 'amount' => 50000,
                 'content' => '言えない',
                 'memo' => 'test',
-                'created_at' => $now->subMouth(),
+                'created_at' => $now->subMonth(),
                 'updated_at' => $now->subMonth(),
             ],
 

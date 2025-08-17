@@ -10,10 +10,14 @@ use App\Http\Requests\Category\DeleteRequest;
 use App\Http\Requests\Category\ShowRequest;
 use App\Http\Requests\Category\StoreRequest;
 use App\Http\Requests\Category\UpdateRequest;
+use App\Http\Resources\Category\IndexExpenseResource;
+use App\Http\Resources\Category\IndexIncomeResource;
 use App\Http\Resources\Category\IndexResource;
 use App\Http\Resources\Category\ShowResource;
 use App\Models\Category;
 use App\Services\Category\DeleteService;
+use App\Services\Category\IndexExpenseService;
+use App\Services\Category\IndexIncomeService;
 use App\Services\Category\IndexService;
 use App\Services\Category\ShowService;
 use App\Services\Category\StoreService;
@@ -36,6 +40,26 @@ class CategoryController extends Controller
 
         // データを整形し返却：resourceクラス使用
         return IndexResource::collection($categories);
+    }
+
+    // --- Expenseカテゴリ一覧取得 ---
+    public function indexExpense(IndexExpenseService $service): JsonResource
+    {
+        // カテゴリ一覧データ取得: serviceクラス使用
+        $expenseCategories = $service();
+
+        // データを整形し返却: resourceクラス使用
+        return IndexExpenseResource::collection($expenseCategories);
+    }
+
+    // --- Incomeカテゴリ一覧取得 ---
+    public function indexIncome(IndexIncomeService $service): JsonResource
+    {
+        // カテゴリ一覧データ取得: serviceクラス使用
+        $incomeCategories = $service();
+
+        // データを整形し返却: resourceクラス使用
+        return IndexIncomeResource::collection($incomeCategories);
     }
 
     // --- カテゴリ新規登録 ---

@@ -23,13 +23,17 @@ Route::prefix('v1')->group(function () {
 Route::middleware(EnsureFrontendRequestsAreStateful::class, 'auth:sanctum')->prefix('v1')->group(function () {
     // ユーザ関係
     Route::prefix('user')->group(function () {
-        Route::get('/', function (Request $request) {return $request->user();}); // ユーザログイン状態管理
+        Route::get('/', function (Request $request) {
+            return $request->user();
+        }); // ユーザログイン状態管理
         Route::get('show', [UserController::class, 'show']); // ユーザ 情報取得
     });
 
     // カテゴリ関係
     Route::prefix('category')->group(function () {
         Route::get('index', [CategoryController::class, 'index']); //カテゴリ 一覧取得
+        Route::get('index_expense', [CategoryController::class, 'indexExpense']); // 支出カテゴリ 一覧取得
+        Route::get('index_income', [CategoryController::class, 'indexIncome']); // 収入カテゴリ 一覧取得
         Route::post('store', [CategoryController::class, 'store']); // カテゴリ 新規登録
         Route::prefix('{category_id}')->group(function () {
             Route::get('/', [CategoryController::class, 'show']); // カテゴリ 詳細取得

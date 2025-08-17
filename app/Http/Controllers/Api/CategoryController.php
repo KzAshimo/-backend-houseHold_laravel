@@ -38,6 +38,18 @@ class CategoryController extends Controller
         return IndexResource::collection($categories);
     }
 
+    // --- Expenseカテゴリ一覧取得 ---
+    public function indexExpense()
+    {
+        return response()->json();
+    }
+
+    // --- Incomeカテゴリ一覧取得 ---
+    public function indexIncome()
+    {
+        return response()->json();
+    }
+
     // --- カテゴリ新規登録 ---
     public function store(StoreRequest $request, StoreService $service): JsonResponse
     {

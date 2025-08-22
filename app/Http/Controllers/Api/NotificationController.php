@@ -14,6 +14,7 @@ use App\Http\Resources\Notification\IndexResource;
 use App\Http\Resources\Notification\ShowResource;
 use App\Models\Notification;
 use App\Services\Notification\DeleteService;
+use App\Services\Notification\ForLoginService;
 use App\Services\Notification\IndexService;
 use App\Services\Notification\ShowService;
 use App\Services\Notification\StoreService;
@@ -26,12 +27,15 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Request;
 
 class NotificationController extends Controller
 {
     // --- ログイン時該当お知らせ取得 ---
-    public function forLogin()
+    public function forLogin(Request $request, ForLoginService $service)
     {
+        $notifications = $service($request->user()->id);
+
         return response()->json();
     }
 

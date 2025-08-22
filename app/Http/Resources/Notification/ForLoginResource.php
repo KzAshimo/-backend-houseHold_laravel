@@ -7,13 +7,16 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ForLoginResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'content' => $this->content,
+            'type' => $this->type,
+            'start_date' => $this->start_date?->toDateString(),
+            'end_date'   => $this->end_date?->toDateString(),
+            'created_at' => $this->created_at?->format('Y-m-d H:i:s'),
+        ];
     }
 }

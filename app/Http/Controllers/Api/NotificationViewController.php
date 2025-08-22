@@ -19,11 +19,6 @@ use Illuminate\Support\Facades\Log;
 
 class NotificationViewController extends Controller
 {
-    public function forLogin()
-    {
-        return response()->json();
-    }
-
     // --- お知らせ既読 登録 ---
     public function store(StoreRequest $request, StoreService $service): JsonResponse
     {

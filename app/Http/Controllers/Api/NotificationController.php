@@ -29,6 +29,12 @@ use Illuminate\Support\Facades\Log;
 
 class NotificationController extends Controller
 {
+    // --- ログイン時該当お知らせ取得 ---
+    public function forLogin()
+    {
+        return response()->json();
+    }
+
     // --- お知らせ一覧取得 ---
     public function index(IndexService $service): JsonResource
     {

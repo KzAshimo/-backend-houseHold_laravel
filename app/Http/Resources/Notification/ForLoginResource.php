@@ -14,8 +14,8 @@ class ForLoginResource extends JsonResource
             'title' => $this->title,
             'content' => $this->content,
             'type' => $this->type,
-            'start_date' => $this->start_date?->toDateString(),
-            'end_date'   => $this->end_date?->toDateString(),
+            'start_date' => $this->start_date,
+            'end_date'   => $this->end_date,
             'created_at' => $this->created_at?->format('Y-m-d H:i:s'),
         ];
     }

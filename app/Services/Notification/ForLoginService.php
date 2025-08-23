@@ -15,7 +15,7 @@ class ForLoginService
                 $sub->where('type', 'once')
                 ->whereNotIn('id', function ($q2) use ($userId){
                     $q2->select('notification_id')
-                    ->form('notification_views')
+                    ->from('notification_views')
                     ->where('user_id', $userId);
                 });
             });

@@ -68,6 +68,7 @@ Route::middleware(EnsureFrontendRequestsAreStateful::class, 'auth:sanctum')->pre
 
     // お知らせ関係
     Route::prefix('notification')->group(function () {
+        Route::get('for_login', [NotificationController::class, 'forLogin']); // ログイン時 お知らせ一覧取得
         Route::get('index', [NotificationController::class, 'index']); // お知らせ 一覧取得
         Route::post('store', [NotificationController::class, 'store']); // お知らせ 新規登録
         Route::prefix('{notification_id}')->group(function () {

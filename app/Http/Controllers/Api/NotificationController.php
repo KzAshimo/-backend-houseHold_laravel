@@ -10,10 +10,12 @@ use App\Http\Requests\Notification\DeleteRequest;
 use App\Http\Requests\Notification\ShowRequest;
 use App\Http\Requests\Notification\StoreRequest;
 use App\Http\Requests\Notification\UpdateRequest;
+use App\Http\Resources\Notification\ForLoginResource;
 use App\Http\Resources\Notification\IndexResource;
 use App\Http\Resources\Notification\ShowResource;
 use App\Models\Notification;
 use App\Services\Notification\DeleteService;
+use App\Services\Notification\ForLoginService;
 use App\Services\Notification\IndexService;
 use App\Services\Notification\ShowService;
 use App\Services\Notification\StoreService;
@@ -22,6 +24,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -29,6 +32,14 @@ use Illuminate\Support\Facades\Log;
 
 class NotificationController extends Controller
 {
+    // --- ログイン時該当お知らせ取得 ---
+    public function forLogin(Request $request, ForLoginService $service)
+    {
+        $notifications = $service($request->user()->id);
+
+        return ForLoginResource::collection($notifications);
+    }
+
     // --- お知らせ一覧取得 ---
     public function index(IndexService $service): JsonResource
     {

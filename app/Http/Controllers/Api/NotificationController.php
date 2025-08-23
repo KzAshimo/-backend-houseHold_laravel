@@ -10,6 +10,7 @@ use App\Http\Requests\Notification\DeleteRequest;
 use App\Http\Requests\Notification\ShowRequest;
 use App\Http\Requests\Notification\StoreRequest;
 use App\Http\Requests\Notification\UpdateRequest;
+use App\Http\Resources\Notification\ForLoginResource;
 use App\Http\Resources\Notification\IndexResource;
 use App\Http\Resources\Notification\ShowResource;
 use App\Models\Notification;
@@ -36,7 +37,7 @@ class NotificationController extends Controller
     {
         $notifications = $service($request->user()->id);
 
-        return response()->json();
+        return ForLoginResource::collection($notifications);
     }
 
     // --- お知らせ一覧取得 ---

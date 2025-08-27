@@ -6,16 +6,15 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    public $withinTransaction = false;
+
     public function up(): void
     {
         Schema::create('exports', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->foreignId('user_id')->constrained()->comment('ユーザid');
-            $table->enum('type', ['income', 'expense', 'all'])->comment('出力対象 [ 収入 / 支出 / 両方 ]');
-            $table->enum('status', ['pending', 'processing', 'complete', 'failed'])->default('pending')->comment('状態 [受付 / 生成中 / 完了 / 失敗]');
+            $table->string('type', 10)->comment('出力対象 [ 収入 / 支出 / 両方 ]');
+            $table->string('status', 10)->default('pending')->comment('状態 [受付 / 生成中 / 完了 / 失敗]');
             $table->date('period_from')->comment('開始日(集計対象)');
             $table->date('period_to')->comment('終了日(集計対象)');
             $table->string('file_name', 50)->nullable()->comment('ファイル名(任意)');
@@ -24,9 +23,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('exports');

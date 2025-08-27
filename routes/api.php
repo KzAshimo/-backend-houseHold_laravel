@@ -1,0 +1,96 @@
+<?php
+
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\ExpenseController;
+use App\Http\Controllers\Api\ExportController;
+use App\Http\Controllers\Api\IncomeController;
+use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\NotificationViewController;
+use App\Http\Controllers\Api\UserController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
+
+// ユーザ認証必要なし
+Route::prefix('v1')->group(function () {
+    // ユーザ関係
+    Route::prefix('user')->group(function () {
+        Route::post('store', [UserController::class, 'store']); // ユーザ 新規登録
+    });
+});
+
+// ユーザ認証必要
+Route::middleware(EnsureFrontendRequestsAreStateful::class, 'auth:sanctum')->prefix('v1')->group(function () {
+    // ユーザ関係
+    Route::prefix('user')->group(function () {
+        Route::get('/', function (Request $request) {
+            return $request->user();
+        }); // ユーザログイン状態管理
+        Route::get('show', [UserController::class, 'show']); // ユーザ 情報取得
+    });
+
+    // カテゴリ関係
+    Route::prefix('category')->group(function () {
+        Route::get('index', [CategoryController::class, 'index']); //カテゴリ 一覧取得
+        Route::get('index_expense', [CategoryController::class, 'indexExpense']); // 支出カテゴリ 一覧取得
+        Route::get('index_income', [CategoryController::class, 'indexIncome']); // 収入カテゴリ 一覧取得
+        Route::post('store', [CategoryController::class, 'store']); // カテゴリ 新規登録
+        Route::prefix('{category_id}')->group(function () {
+            Route::get('/', [CategoryController::class, 'show']); // カテゴリ 詳細取得
+            Route::put('/', [CategoryController::class, 'update']); // カテゴリ 編集
+            Route::delete('/', [CategoryController::class, 'delete']); // カテゴリ 削除
+        });
+    });
+
+    // 収入関係
+    Route::prefix('income')->group(function () {
+        Route::get('index', [IncomeController::class, 'index']); // 収入 一覧取得
+        Route::get('index_category', [IncomeController::class, 'indexCategory']); // 収入 カテゴリ一覧取得
+        Route::post('store', [IncomeController::class, 'store']); // 収入 新規登録
+        Route::prefix('{income_id}')->group(function () {
+            Route::get('/', [IncomeController::class, 'show']); // 収入 詳細取得
+            Route::put('/', [IncomeController::class, 'update']); // 収入 編集
+            Route::delete('/', [IncomeController::class, 'delete']); // 収入 削除
+        });
+    });
+
+    // 支出関係
+    Route::prefix('expense')->group(function () {
+        Route::get('index', [ExpenseController::class, 'index']); // 支出 一覧取得
+        Route::get('index_category', [ExpenseController::class, 'indexCategory']); // 支出 カテゴリ一覧取得
+        Route::post('store', [ExpenseController::class, 'store']); // 支出 新規登録
+        Route::prefix('{expense_id}')->group(function () {
+            Route::get('/', [ExpenseController::class, 'show']); // 支出 詳細取得
+            Route::put('/', [ExpenseController::class, 'update']); // 支出 編集
+            Route::delete('/', [ExpenseController::class, 'delete']); // 支出 削除
+        });
+    });
+
+    // お知らせ関係
+    Route::prefix('notification')->group(function () {
+        Route::get('for_login', [NotificationController::class, 'forLogin']); // ログイン時 お知らせ一覧取得
+        Route::get('index', [NotificationController::class, 'index']); // お知らせ 一覧取得
+        Route::post('store', [NotificationController::class, 'store']); // お知らせ 新規登録
+        Route::prefix('{notification_id}')->group(function () {
+            Route::get('/', [NotificationController::class, 'show']); // お知らせ 詳細取得
+            Route::put('/', [NotificationController::class, 'update']); //お知らせ 編集
+            Route::delete('/', [NotificationController::class, 'delete']); // お知らせ 削除
+        });
+    });
+
+    // お知らせ既読関係
+    Route::prefix('notification_view')->group(function () {
+        Route::post('{notification_id}', [NotificationViewController::class, 'store']); // お知らせ既読 新規登録
+        Route::get('index', [NotificationViewController::class, 'index']); // お知らせ既読 一覧取得
+    });
+
+    // CSV関係
+    Route::prefix('export')->group(function () {
+        Route::get('index', [ExportController::class, 'index']); // csv 一覧取得
+        Route::post('store', [ExportController::class, 'store']); // csv 新規登録
+        Route::prefix('{export_id}')->group(function () {
+            Route::post('/', [ExportController::class, 'export']); // csv ファイル作成
+            Route::get('/', [ExportController::class, 'download']); // csv 出力
+        });
+    });
+});

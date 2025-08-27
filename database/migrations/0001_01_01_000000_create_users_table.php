@@ -6,9 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    public $withinTransaction = false;
+
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
@@ -16,7 +15,7 @@ return new class extends Migration
             $table->string('name', 50)->comment('ユーザ名');
             $table->string('email', 255)->unique('email');
             $table->string('password', 255)->comment('パスワード');
-            $table->enum('role', ['user', 'admin'])->comment('管理者権限');
+            $table->string('role', 10)->comment('管理者権限'); // enum → string
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
@@ -39,9 +38,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('users');

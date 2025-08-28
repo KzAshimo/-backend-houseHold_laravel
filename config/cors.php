@@ -7,6 +7,8 @@ return [
     'allowed_origins' => explode(',', env('CORS_ALLOWED_ORIGINS', '')),
 
     'allowed_origins_patterns' => [
+        '~^https://householdnextjs\.vercel\.app$~',
+
         '~^https://householdnext-.*\.vercel\.app$~',
     ],
 

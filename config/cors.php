@@ -4,8 +4,7 @@ return [
     'paths' => ['api/*', 'sanctum/csrf-cookie', 'login', 'logout'],
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => explode(',', env('CORS_ALLOWED_ORIGINS', '')),
-
+    'allowed_origins' => ['https://householdnextjs.vercel.app'],
     'allowed_origins_patterns' => [
         '~^https://householdnextjs\.vercel\.app$~',
 

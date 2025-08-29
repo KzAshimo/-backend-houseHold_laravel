@@ -97,3 +97,8 @@ Route::middleware(EnsureFrontendRequestsAreStateful::class, 'auth:sanctum')->pre
         });
     });
 });
+
+
+Route::options('/{any}', function () {
+    return response()->noContent();
+})->where('any', '.*');

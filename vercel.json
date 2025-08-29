@@ -39,6 +39,10 @@
         },
         {
             "src": "/(.*)",
+            "headers": {
+                "Access-Control-Allow-Origin": "https://householdnextjs.vercel.app",
+                "Access-Control-Allow-Credentials": "true"
+            },
             "dest": "/api/index.php"
         }
     ],

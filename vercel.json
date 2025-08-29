@@ -1,5 +1,7 @@
 {
-    "regions": ["hnd1"],
+    "regions": [
+        "hnd1"
+    ],
     "builds": [
         {
             "src": "/api/index.php",
@@ -15,18 +17,6 @@
     ],
     "routes": [
         {
-            "src": "/api/.*",
-            "methods": ["OPTIONS"],
-            "status": 204,
-            "headers": {
-                "Access-Control-Allow-Origin": "https://householdnextjs.vercel.app",
-                "Access-Control-Allow-Methods": "GET,OPTIONS,PATCH,DELETE,POST,PUT",
-                "Access-Control-Allow-Headers": "Content-Type, X-Requested-With",
-                "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Max-Age": "86400"
-            }
-        },
-        {
             "src": "/build/assets/(.*)",
             "dest": "/public/build/assets/$1"
         },
@@ -40,10 +30,6 @@
         },
         {
             "src": "/(.*)",
-            "headers": {
-                "Access-Control-Allow-Origin": "https://householdnextjs.vercel.app",
-                "Access-Control-Allow-Credentials": "true"
-            },
             "dest": "/api/index.php"
         }
     ],

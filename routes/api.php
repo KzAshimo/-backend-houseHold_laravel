@@ -16,6 +16,9 @@ Route::prefix('v1')->group(function () {
     // ユーザ関係
     Route::prefix('user')->group(function () {
         Route::post('store', [UserController::class, 'store']); // ユーザ 新規登録
+        Route::options('store', function () {
+            return response()->json(null, 204);
+        });
     });
 });
 
@@ -94,7 +97,3 @@ Route::middleware(EnsureFrontendRequestsAreStateful::class, 'auth:sanctum')->pre
         });
     });
 });
-
-Route::options('/{any}', function () {
-    return response()->json([], \Illuminate\Http\Response::HTTP_OK);
-})->where('any', '.*');

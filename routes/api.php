@@ -94,3 +94,7 @@ Route::middleware(EnsureFrontendRequestsAreStateful::class, 'auth:sanctum')->pre
         });
     });
 });
+
+Route::options('/{any}', function () {
+    return response()->json([], \Illuminate\Http\Response::HTTP_OK);
+})->where('any', '.*');

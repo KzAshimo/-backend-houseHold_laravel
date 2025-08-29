@@ -56,6 +56,12 @@
         "test": [
             "@php artisan config:clear --ansi",
             "@php artisan test"
+        ],
+        "post-install-cmd": [
+            "php artisan optimize:clear",
+            "php artisan config:cache",
+            "php artisan route:cache",
+            "php artisan view:cache"
         ]
     },
     "extra": {

@@ -4,22 +4,7 @@ use Illuminate\Support\Str;
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Default Database Connection Name
-    |--------------------------------------------------------------------------
-    |
-    | デフォルトのデータベース接続を 'pgsql' に変更します。
-    |
-    */
-
     'default' => env('DB_CONNECTION', 'pgsql'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Database Connections
-    |--------------------------------------------------------------------------
-    */
 
     'connections' => [
 
@@ -51,7 +36,7 @@ return [
             ]) : [],
         ],
 
-        // --- 重要な設定 ---
+        // PostgreSQL (Neon DB)
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DB_URL'),
@@ -63,12 +48,9 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
-            // .envのDB_SCHEMAを反映するように変更
             'schema' => env('DB_SCHEMA', 'public'),
-            // Neon接続で必須のSSLモードを.envから設定できるように変更
-            'sslmode' => env('DB_SSLMODE', 'prefer'),
+            'sslmode' => env('DB_SSLMODE', 'require'),
         ],
-        // --- ここまで ---
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',
@@ -85,25 +67,12 @@ return [
 
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Migration Repository Table
-    |--------------------------------------------------------------------------
-    */
-
     'migrations' => [
         'table' => 'migrations',
         'update_date_on_publish' => true,
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Redis Databases
-    |--------------------------------------------------------------------------
-    */
-
     'redis' => [
-
         'client' => env('REDIS_CLIENT', 'phpredis'),
 
         'options' => [
@@ -123,10 +92,9 @@ return [
             'url' => env('REDIS_URL'),
             'host' => env('REDIS_HOST', '127.0.0.1'),
             'password' => env('REDIS_PASSWORD'),
-            'port' => env('REDIS_PORT', '6379'),
+            'port' => env('REDIS_PORT'),
             'database' => env('REDIS_CACHE_DB', '1'),
         ],
-
     ],
 
 ];

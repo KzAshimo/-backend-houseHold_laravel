@@ -46,19 +46,6 @@ class User extends Authenticatable
         'role' => RoleEnum::class,
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
-
     // リレーション:category
     public function categories()
     {

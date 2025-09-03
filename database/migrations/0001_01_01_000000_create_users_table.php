@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('name', 50)->comment('ユーザ名');
             $table->string('email', 255)->unique('email');
             $table->string('password', 255)->comment('パスワード');
-            $table->string('role', 10)->comment('管理者権限'); // enum → string
+            $table->string('role', 10)->comment('管理者権限');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

@@ -102,3 +102,12 @@ Route::middleware(EnsureFrontendRequestsAreStateful::class, 'auth:sanctum')->pre
 Route::options('/{any}', function () {
     return response()->noContent();
 })->where('any', '.*');
+
+Route::get('/debug-current-config', function () {
+    return response()->json([
+        'message' => '現在アプリケーションが読み込んでいる設定値です。',
+        '1_SESSION_DOMAIN_from_config_file' => config('session.domain'),
+        '2_SESSION_SAMESITE_from_config_file' => config('session.same_site'),
+        '3_SESSION_DOMAIN_from_env_file' => env('SESSION_DOMAIN', 'ENVファイルに設定がありません'),
+    ]);
+});

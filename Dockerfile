@@ -33,3 +33,12 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 
 # ポートを公開
 EXPOSE 80
+
+# 作成したエントリーポイントスクリプトをコンテナ内にコピーする
+COPY entrypoint.sh /usr/local/bin/
+
+# スクリプトに実行権限を与える
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# コンテナ起動時にこのスクリプトを実行するように設定する
+ENTRYPOINT ["entrypoint.sh"]

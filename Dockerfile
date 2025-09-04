@@ -1,44 +1,54 @@
-# Docker Hubの公式PHPイメージを使用 (Apacheサーバー付き)
-FROM php:8.2-apache
+# --- ステージ1: ビルドステージ ---
+# composerがプリインストールされたイメージを "builder" と名付ける
+FROM composer:2 as builder
 
-# Laravelが必要とするPHP拡張機能をインストール
-RUN apt-get update && apt-get install -y \
-    libpq-dev \
-    libzip-dev \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo pdo_pgsql zip gd
+# 作業ディレクトリを設定
+WORKDIR /var/www/html
 
-# Apacheのrewriteモジュールを有効化 (LaravelのURLルーティングに必須)
-RUN a2enmod rewrite
+# まずは依存関係ファイルだけコピーする
+COPY composer.json composer.lock ./
 
-# ApacheのドキュメントルートをLaravelのpublicディレクトリに設定
-COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
+# composer install を実行 (本番に必要なもののみ)
+# これが最も重い処理。このステージで終わらせる。
+RUN composer install --no-interaction --no-dev --optimize-autoloader
 
-# Composerをインストール
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-ENV COMPOSER_ALLOW_SUPERUSER=1
-
-# 先に全てのアプリケーションファイルをコピーする
+# アプリケーションの全ファイルをコピーする
 COPY . .
 
-# その後でcomposer installを実行する
-RUN composer install --no-interaction --no-dev --prefer-dist --optimize-autoloader
-# ★★★★★★★★★★★★★★★
 
-# Laravelのディレクトリパーミッションを設定
+# --- ステージ2: 本番ステージ ---
+# 軽量なPHP+Apacheイメージをベースにする
+FROM php:8.2-apache
+
+# 作業ディレクトリを設定
+WORKDIR /var/www/html
+
+# Laravelに必要なPHP拡張（PostgreSQL用）と、画像処理用のgdをインストール
+RUN apt-get update && apt-get install -y \
+        libzip-dev \
+        unzip \
+        libpng-dev \
+        libjpeg-dev \
+        libfreetype6-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd \
+    && docker-php-ext-install pdo pdo_pgsql zip
+
+# ApacheのURL書き換えモジュールを有効化
+RUN a2enmod rewrite
+
+# Apacheの設定ファイルをコンテナ内にコピー
+COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
+
+# ビルドステージから、インストール済みのファイル一式をコピーしてくる
+COPY --from=builder /var/www/html .
+
+# Laravelのストレージとキャッシュディレクトリの所有者をWebサーバー(www-data)に変更
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# ポートを公開
-EXPOSE 80
-
-# 作成したエントリーポイントスクリプトをコンテナ内にコピーする
+# エントリーポイントスクリプトをコピーして実行権限を付与
 COPY entrypoint.sh /usr/local/bin/
-
-# スクリプトに実行権限を与える
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# コンテナ起動時にこのスクリプトを実行するように設定する
+# コンテナ起動時にエントリーポイントスクリプトを実行する
 ENTRYPOINT ["entrypoint.sh"]

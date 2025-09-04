@@ -50,6 +50,7 @@ return [
             'prefix_indexes' => true,
             'schema' => env('DB_SCHEMA', 'public'),
             'sslmode' => env('DB_SSLMODE', 'require'),
+            'channel_binding' => env('DB_CHANNEL_BINDING'),
         ],
 
         'sqlsrv' => [

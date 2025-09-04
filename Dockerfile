@@ -12,6 +12,8 @@ COPY composer.json composer.lock ./
 # これが最も重い処理。このステージで終わらせる。
 RUN composer install --no-interaction --no-dev --optimize-autoloader
 
+RUN cat composer.lock
+
 # アプリケーションの全ファイルをコピーする
 COPY . .
 

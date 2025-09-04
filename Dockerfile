@@ -1,5 +1,5 @@
 # Docker Hubの公式PHPイメージを使用 (Apacheサーバー付き)
-FROM php:8.2-fpm-apache
+FROM php:8.2-apache
 
 # Laravelが必要とするPHP拡張機能をインストール
 # (gdは画像処理、zipはファイル圧縮によく使われるため追加)

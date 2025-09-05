@@ -6,7 +6,7 @@ FROM composer:2 as builder
 WORKDIR /var/www/html
 
 # まずは依存関係ファイルだけコピーする
-COPY composer.json composer.lock ./
+COPY composer.json ./
 
 # 【追加】ビルドに使用されるcomposer.jsonの内容をログに出力して確認する
 RUN cat composer.json

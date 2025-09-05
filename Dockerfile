@@ -1,7 +1,7 @@
 # PHP 8.2 と Apache が入った公式イメージをベースにする
 FROM php:8.2-apache
 
-# 必要なライブラリとPHP拡張機能（pdo_pgsql と composer に必要なもの）を一度にすべてインストールする
+# 【変更点】intl拡張機能に必要なライブラリ(libicu-dev)を追加
 RUN apt-get update && apt-get install -y \
         unzip \
         libzip-dev \
@@ -9,8 +9,10 @@ RUN apt-get update && apt-get install -y \
         libpng-dev \
         libjpeg-dev \
         libfreetype6-dev \
+        libicu-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd \
+    # 【変更点】intl拡張機能をインストール
+    && docker-php-ext-install -j$(nproc) gd intl \
     && docker-php-ext-install pdo pdo_pgsql zip
 
 # Composer をグローバルにインストールする
@@ -23,14 +25,15 @@ COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 # 作業ディレクトリを設定
 WORKDIR /var/www/html
 
-# 【最重要変更点】先にアプリケーションの全ファイルをコピーする
+# 先にアプリケーションの全ファイルをコピーする
 COPY . .
 
 # Artisanコマンドが参照できるよう、.env.example から .env ファイルを作成する
+# 注意: Renderの環境変数で上書きされるため、ここでの内容は一時的なものです
 RUN cp .env.example .env
 
-# 依存関係をインストール（--ignore-platform-reqs は不要）
-# この時点ではartisanコマンドが実行できるので、スクリプトは成功する
+# 依存関係をインストール
+# intl拡張機能がインストールされたので、artisanスクリプトは成功するはず
 RUN composer install --no-interaction --no-dev --optimize-autoloader
 
 # パーミッションを設定

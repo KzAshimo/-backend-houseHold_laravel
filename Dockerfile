@@ -8,6 +8,9 @@ WORKDIR /var/www/html
 # まずは依存関係ファイルだけコピーする
 COPY composer.json composer.lock ./
 
+# 【追加】ビルドに使用されるcomposer.jsonの内容をログに出力して確認する
+RUN cat composer.json
+
 # 【変更点】installをupdateに変更し、Renderの環境で依存関係を再解決させる
 RUN composer update --no-interaction --no-dev --optimize-autoloader -vvv
 

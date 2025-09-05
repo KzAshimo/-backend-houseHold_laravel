@@ -1,57 +1,37 @@
 # --- ステージ1: ビルドステージ ---
-# composerがプリインストールされたイメージを "builder" と名付ける
-FROM composer:2 as builder
+FROM composer/composer:2-bin as composer
+FROM php:8.2-cli as builder
 
-# 作業ディレクトリを設定
+COPY --from=composer /composer /usr/bin/composer
+
+RUN apt-get update && apt-get install -y libpq-dev \
+    && docker-php-ext-install pdo_pgsql
+
 WORKDIR /var/www/html
 
-# 依存関係ファイルをコピー
 COPY composer.json composer.lock ./
 
-# 【追加】ビルドに使用されるcomposer.jsonの内容をログに出力して確認する
-RUN cat composer.json
+RUN composer install --no-interaction --no-dev --optimize-autoloader --ignore-platform-reqs
 
-# install に修正（update禁止）
-RUN composer install --no-interaction --no-dev --optimize-autoloader --prefer-dist
-RUN cat composer.lock
-
-# アプリケーションの全ファイルをコピーする
 COPY . .
 
-
 # --- ステージ2: 本番ステージ ---
-# 軽量なPHP+Apacheイメージをベースにする
 FROM php:8.2-apache
-
-# 作業ディレクトリを設定
 WORKDIR /var/www/html
-
-# Laravelに必要なPHP拡張（PostgreSQL用）と、画像処理用のgdをインストール
 RUN apt-get update && apt-get install -y \
         libzip-dev \
         unzip \
         libpng-dev \
         libjpeg-dev \
         libfreetype6-dev \
+        libpq-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install pdo pdo_pgsql zip
-
-# ApacheのURL書き換えモジュールを有効化
 RUN a2enmod rewrite
-
-# Apacheの設定ファイルをコンテナ内にコピー
 COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
-
-# ビルドステージから、インストール済みのファイル一式をコピーしてくる
 COPY --from=builder /var/www/html .
-
-# Laravelのストレージとキャッシュディレクトリの所有者をWebサーバー(www-data)に変更
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-
-# エントリーポイントスクリプトをコピーして実行権限を付与
 COPY entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
-
-# コンテナ起動時にエントリーポイントスクリプトを実行する
 ENTRYPOINT ["entrypoint.sh"]

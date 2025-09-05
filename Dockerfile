@@ -1,6 +1,7 @@
 # PHP 8.2 と Apache が入った公式イメージをベースにする
 FROM php:8.2-apache
 
+# 必要なライブラリとPHP拡張機能（pdo_pgsql と composer に必要なもの）を一度にすべてインストールする
 RUN apt-get update && apt-get install -y \
         unzip \
         libzip-dev \
@@ -22,14 +23,15 @@ COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 # 作業ディレクトリを設定
 WORKDIR /var/www/html
 
-# まず composer.json と composer.lock だけをコピー
-COPY composer.json composer.lock ./
-
-# 依存関係をインストール
-RUN composer install --no-interaction --no-dev --optimize-autoloader
-
-# アプリケーションの残りのファイルをコピー
+# 【最重要変更点】先にアプリケーションの全ファイルをコピーする
 COPY . .
+
+# Artisanコマンドが参照できるよう、.env.example から .env ファイルを作成する
+RUN cp .env.example .env
+
+# 依存関係をインストール（--ignore-platform-reqs は不要）
+# この時点ではartisanコマンドが実行できるので、スクリプトは成功する
+RUN composer install --no-interaction --no-dev --optimize-autoloader
 
 # パーミッションを設定
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache

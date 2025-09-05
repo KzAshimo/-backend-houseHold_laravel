@@ -3,11 +3,24 @@
 # エラーが発生したらスクリプトを終了する
 set -e
 
-# データベースのマイグレーションを実行
+# --- デバッグとマイグレーション ---
+
+echo "Clearing configuration cache..."
+# 古い設定キャッシュを完全に削除します（最重要）
+php artisan config:clear
+
+echo "Caching configuration..."
+# Renderの環境変数を読み込んで設定をキャッシュします
+php artisan config:cache
+
+echo "Testing database connection..."
+# データベースに接続できるかテストし、その結果をログに出力します
+php artisan db:show
+
 echo "Running database migrations..."
+# データベースマイグレーションを実行します
 php artisan migrate --force
 
-# Apacheサーバーをフォアグラウンドで起動
-# exec を使うことで、このスクリプトのプロセスがApacheのプロセスに置き換わる
-# これにより、Dockerがコンテナを正しく管理できるようになる
+# --- サーバー起動 ---
+echo "Starting Apache server..."
 exec apache2-foreground

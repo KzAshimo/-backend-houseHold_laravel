@@ -9,7 +9,7 @@ WORKDIR /var/www/html
 COPY composer.json composer.lock ./
 
 # 【変更点】installをupdateに変更し、Renderの環境で依存関係を再解決させる
-RUN composer update --no-interaction --no-dev --optimize-autoloader
+RUN composer update --no-interaction --no-dev --optimize-autoloader -vvv
 
 RUN cat composer.lock
 

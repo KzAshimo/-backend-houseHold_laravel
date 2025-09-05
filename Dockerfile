@@ -5,15 +5,14 @@ FROM composer:2 as builder
 # 作業ディレクトリを設定
 WORKDIR /var/www/html
 
-# まずは依存関係ファイルだけコピーする
-COPY composer.json ./
+# 依存関係ファイルをコピー
+COPY composer.json composer.lock ./
 
 # 【追加】ビルドに使用されるcomposer.jsonの内容をログに出力して確認する
 RUN cat composer.json
 
-# 【変更点】installをupdateに変更し、Renderの環境で依存関係を再解決させる
-RUN composer update --no-interaction --no-dev --optimize-autoloader -vvv
-
+# install に修正（update禁止）
+RUN composer install --no-interaction --no-dev --optimize-autoloader --prefer-dist
 RUN cat composer.lock
 
 # アプリケーションの全ファイルをコピーする

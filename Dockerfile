@@ -8,9 +8,8 @@ WORKDIR /var/www/html
 # まずは依存関係ファイルだけコピーする
 COPY composer.json composer.lock ./
 
-# composer install を実行 (本番に必要なもののみ)
-# これが最も重い処理。このステージで終わらせる。
-RUN composer install --no-interaction --no-dev --optimize-autoloader
+# 【変更点】installをupdateに変更し、Renderの環境で依存関係を再解決させる
+RUN composer update --no-interaction --no-dev --optimize-autoloader
 
 RUN cat composer.lock
 

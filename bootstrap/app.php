@@ -13,6 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->trustProxies(at: '*');
 
         // apiミドルウェアグループの先頭にSanctumのミドルウェアを強制的に追加
         $middleware->api(prepend: [

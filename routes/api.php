@@ -11,17 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
-// ユーザ認証必要なし
-Route::prefix('v1')->group(function () {
-    // ユーザ関係
-    Route::prefix('user')->group(function () {
-        Route::post('store', [UserController::class, 'store']); // ユーザ 新規登録
-        Route::options('store', function () {
-            return response()->json(null, 204);
-        });
-    });
-});
-
 // ユーザ認証必要
 Route::middleware(EnsureFrontendRequestsAreStateful::class, 'auth:sanctum')->prefix('v1')->group(function () {
     // ユーザ関係

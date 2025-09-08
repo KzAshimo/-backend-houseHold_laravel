@@ -20,11 +20,7 @@ return [
         '~^https://householdnext-.*\.vercel\.app$~',
     ],
 
-    'allowed_headers' => [
-        'Content-Type',
-        'X-Requested-With',
-        'X-XSRF-TOKEN',
-    ],
+    'allowed_headers' => ['*'],
 
     'exposed_headers' => [],
 

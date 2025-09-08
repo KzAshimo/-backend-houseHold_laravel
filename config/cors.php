@@ -12,12 +12,9 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins'  => ['*'],
+    'allowed_origins' => explode(',', env('CORS_ALLOWED_ORIGINS', 'http://localhost:3000')),
 
-    'allowed_origins_patterns' => [
-        // VercelプレビューURLなども許可
-        '~^https://householdnext-.*\.vercel\.app$~',
-    ],
+    'allowed_origins_patterns' => [],
 
     'allowed_headers' => ['*'],
 

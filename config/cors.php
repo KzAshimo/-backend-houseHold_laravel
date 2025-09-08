@@ -8,12 +8,11 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'paths' => ['api/*', 'v1/*', 'sanctum/csrf-cookie', 'login', 'logout'],
+    'paths' => ['api/*', 'api/*', 'sanctum/csrf-cookie', 'login', 'logout'],
 
     'allowed_methods' => ['*'],
 
-    // .env の CORS_ALLOWED_ORIGINS に設定したURLを利用
-    'allowed_origins' => explode(',', env('CORS_ALLOWED_ORIGINS', 'http://localhost:3000')),
+    'allowed_origins'  => ['*'],
 
     'allowed_origins_patterns' => [
         // VercelプレビューURLなども許可

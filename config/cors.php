@@ -8,7 +8,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie', 'login', 'logout'],
+    'paths' => ['api/*', 'v1/*', 'sanctum/csrf-cookie', 'login', 'logout'],
 
     'allowed_methods' => ['*'],
 
@@ -20,11 +20,7 @@ return [
         '~^https://householdnext-.*\.vercel\.app$~',
     ],
 
-    'allowed_headers' => [
-        'Content-Type',
-        'X-Requested-With',
-        'X-XSRF-TOKEN',
-    ],
+    'allowed_headers' => ['*'],
 
     'exposed_headers' => [],
 
